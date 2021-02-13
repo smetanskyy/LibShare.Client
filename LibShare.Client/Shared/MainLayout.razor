@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+
+<AboveNavMenu />
+<NavMenu />
+
+<div>
+    @Body
+</div>
+
+<Footer />
+
+@code {
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("renderJS");
+        base.OnAfterRender(firstRender);
+    }
+}

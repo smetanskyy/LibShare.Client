@@ -1,0 +1,137 @@
+﻿@page "/login"
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@using LibShare.Client.ApiModels
+@using System.Text.Json
+
+
+<div class="container">
+    <h2 class="text-center">Увійти в акаунт</h2>
+    <EditForm Model="@_loginApiMpdel" OnValidSubmit="OnSubmitWithRecaptcha">
+        <DataAnnotationsValidator />
+        <p>
+            <label for="Email">Email</label><br />
+            <InputText id="Email" @bind-Value="_loginApiMpdel.Email" />
+            <ValidationMessage For="@(() => _loginApiMpdel.Email)" />
+        </p>
+
+        <p>
+            <label for="Password">Password</label><br />
+            <InputText id="Password" @bind-Value="_loginApiMpdel.Password" />
+            <ValidationMessage For="@(() => _loginApiMpdel.Password)" />
+        </p>
+
+        <div class="mt-2 mb-2">
+            <input 
+                   id="submitBtn"
+                   type="submit" value="Sign in"
+                   class="g-recaptcha btn btn-primary"
+                   @btnVisibility
+                   data-sitekey='6Le3gRkaAAAAADJIzK5jv3HegJ7VzkuS0XiBa-mK'
+                   data-callback='onSubmit'
+                   data-action='submit' />
+
+            <div class="bg-primary text-light rounded p-2 @sendVisibility">
+                <i class="fa fa-cog fa-spin"></i> Sending
+            </div>
+        </div>
+    </EditForm>
+
+    @if (displaySendAlert == true)
+    {
+        <div id="sendalert" class="alert @alertinfo mt-2">
+            <span class="@alerttextclass">@alerttext</span>
+        </div>
+    }
+</div>
+
+@code {
+    private LoginApiModel _loginApiMpdel = new LoginApiModel();
+    private bool displaySendAlert { get; set; } = false;
+    private string alertinfo { get; set; }
+    private string alerttextclass { get; set; }
+    private string alerttext { get; set; }
+    private string btnVisibility = "d-block";
+    private string sendVisibility = "d-none";
+    string google { get; set; }
+
+    private async void OnSubmit()
+    {
+        await JSRuntime.InvokeAsync<string>("onSubmit", google);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnSubmitWithRecaptcha()
+    {
+        Console.WriteLine("Hellllllo");
+        _loginApiMpdel.RecaptchaToken = google;
+        Console.WriteLine("GOOGLE: ", google);
+        btnVisibility = "d-none";
+        sendVisibility = "d-inline-block";
+        var results = await SubmitForm();
+
+        if (results != "failed")
+        {
+            var result = System.Text.Json.JsonSerializer.Deserialize<JWTApiModel>(results);
+            //var result = JObject.Parse(results);
+            if (result.Token != null)
+            {
+                ShowSuccessAlert();
+                _loginApiMpdel.Email = string.Empty;
+                btnVisibility = "d-block";
+                sendVisibility = "d-none";
+            }
+            else
+            {
+                btnVisibility = "d-block";
+                sendVisibility = "d-none";
+                ShowErrorAlert("BAD MESSAGE");
+            }
+        }
+        else
+        {
+            btnVisibility = "d-block";
+            sendVisibility = "d-none";
+            ShowErrorAlert("There was a problem submitting the form.");
+        }
+    }
+
+    private async Task<string> SubmitForm()
+    {
+        var json = JsonSerializer.Serialize(_loginApiMpdel);
+        var stringContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        var response = await Http.PostAsync("http://localhost:5000/api/Authentication/LoginUser", stringContent);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var resultContent = response.Content.ReadAsStringAsync().Result;
+            return resultContent;
+        }
+        else
+            return "failed";
+    }
+
+    private void ShowSuccessAlert()
+    {
+        displaySendAlert = true;
+        alertinfo = "alert-success";
+        alerttextclass = "text-success";
+        alerttext = "Sent Successfully";
+    }
+
+    private void ShowErrorAlert(string message)
+    {
+        displaySendAlert = true;
+        alertinfo = "alert-danger";
+        alerttextclass = "text-danger";
+        alerttext = message;
+    }
+}
+

@@ -1,0 +1,29 @@
+﻿@page "/register"
+@implements IDisposable
+
+<div class="container">
+    <h3>Register</h3>
+    <EditForm Model="@Model" OnValidSubmit="@OnSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>
+            <label for="Email">Email</label><br />
+            <InputText type="email" id="Email" @bind-Value="Model.Email" />
+        </p>
+        <p>
+            <label for="Username">Username</label><br />
+            <InputText id="Username" @bind-Value="Model.Username" />
+        </p>
+        <p>
+            <label for="Password">Password</label><br />
+            <InputText type="password" id="Password" @bind-Value="Model.Password" />
+        </p>
+        <p>
+            <label for="ConfirmPassword">Confirm Password</label><br />
+            <InputText type="password" id="ConfirmPassword" @bind-Value="Model.ConfirmPassword" />
+        </p>
+
+        <button type="submit">Submit</button>
+    </EditForm>
+</div>
