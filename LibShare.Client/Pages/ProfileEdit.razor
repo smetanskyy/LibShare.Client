@@ -1,0 +1,27 @@
+﻿@page "/profile-edit"
+<h3>ProfileEdit</h3>
+
+<InputImage Label="Фото користувача" OnSelectedImage="PhotoSelected" ImageUrl="@PhotoUrl" />
+
+@code {
+    [Parameter]
+    public UserApiModel UserModel { get; set; } = new UserApiModel();
+
+    public string PhotoUrl { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (string.IsNullOrWhiteSpace(UserModel.Photo))
+        {
+            PhotoUrl = UserModel.Photo;
+            UserModel.Photo = null;
+        }
+    }
+
+    private void PhotoSelected(string imageBase64)
+    {
+        UserModel.Photo = imageBase64;
+        PhotoUrl = null;
+        Console.WriteLine("Hello from PhotoSelected");
+    }
+}

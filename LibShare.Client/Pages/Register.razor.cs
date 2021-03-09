@@ -1,7 +1,11 @@
-﻿using LibShare.Client.Data.ApiModels;
+﻿using LibShare.Client.Components;
+using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
@@ -10,37 +14,64 @@ namespace LibShare.Client.Pages
     {
         [Inject]
         IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        HttpClient Http { get; set; }
 
-        public RegisterApiModel Model { get; set; }
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
 
-        protected override void OnInitialized()
-        {
-            Model = new RegisterApiModel();
-            base.OnInitialized();
-        }
+        [Parameter]
+        public RegisterApiModel Model { get; set; } = new RegisterApiModel();
+
+        public string ErrorMessage { get; set; }
+
+        [CascadingParameter]
+        private Spinner LoadSpinner { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await JSRuntime.InvokeVoidAsync("showCaptcha");
+                await JSRuntime.ShowRecaptchaIcon();
             }
         }
 
-        private async Task<string> GetRecaptcha(string actionName)
+        private async void OnSubmitHandle()
         {
-            return await JSRuntime.InvokeAsync<string>("runCaptcha", actionName);
+            LoadSpinner.Show();
+            try
+            {
+                Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
+                var response = await Http.PostAsJsonAsync("http://localhost:5050/api/account/register", Model);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var content = response.Content.ReadFromJsonAsync<MessageApiModel>().Result;
+                    Console.WriteLine(content.Message);
+                    ErrorMessage = content.Message;
+                    StateHasChanged();
+                    return;
+                }
+                var jwt = await response.Content.ReadFromJsonAsync<TokenApiModel>();
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            finally
+            {
+                LoadSpinner.Hide();
+            }
         }
 
-        private async void OnSubmit()
+        public void ClearErrorMessage()
         {
-            Model.RecaptchaToken = await GetRecaptcha("OnSubmit");
-            Console.WriteLine(Model.RecaptchaToken);
+            ErrorMessage = null;
         }
 
         public void Dispose()
         {
-            JSRuntime.InvokeVoidAsync("hideCaptcha");
+            JSRuntime.HideRecaptchaIcon();
         }
     }
 }

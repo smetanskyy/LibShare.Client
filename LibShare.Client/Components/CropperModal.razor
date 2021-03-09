@@ -1,0 +1,61 @@
+﻿@if (displayModalToggle)
+{
+    <!-- Modal -->
+    <div class="modal-backdrop show"></div>
+    <div class="modal fade show" id="cropperModal" tabindex="-1" role="dialog"
+         aria-labelledby="cropperModal" aria-hidden="true" style="display: block">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cropperModalTitle">@Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Hide">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (ChildContent == null)
+                    {
+                        <text>AWESOME RESULT!</text>
+                    }
+                    else
+                    {
+                        @ChildContent
+                    }
+                    <input type="text" @bind="Base64String.Photo"/>
+                    <p>@Base64String.Photo</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Hide">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="OnConfirm">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [CascadingParameter]
+    public ImageApiModel Base64String { get; set; }
+
+    private bool displayModalToggle = false;
+
+    [Parameter]
+    public string Title { get; set; } = "Custom Modal";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback OnConfirm { get; set; }
+
+    public void Show()
+    {
+        displayModalToggle = true;
+        StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        displayModalToggle = false;
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,58 @@
+﻿@inject IFileReaderService FileReaderService
+
+<div>
+    <label>@Label</label>
+    <div>
+        <input type="file" @ref="InputElement" @onchange="ImageFileSelected" accept=".jpg,.jpeg,.png" />
+    </div>
+    <div>
+        @if (ImageBase64 != null)
+        {
+            <div>
+                <div style="margin: 10px">
+                    <img src="data:image/jpeg;base64, @ImageBase64" style="width: 400px;" />
+                </div>
+            </div>
+        }
+        @if (ImageUrl != null)
+        {
+            <div>
+                <div style="margin: 10px">
+                    <img src="@ImageUrl" style="width: 400px;" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "Фото користувача";
+
+
+    public ElementReference InputElement { get; private set; }
+    public string ImageBase64 { get; private set; }
+
+    [Parameter]
+    public string ImageUrl { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSelectedImage { get; set; }
+
+    async Task ImageFileSelected()
+    {
+        foreach (var file in await FileReaderService.CreateReference(InputElement).EnumerateFilesAsync())
+        {
+            using (MemoryStream memoryStream = await file.CreateMemoryStreamAsync(10 * 1024))
+            {
+                var imageBytes = new byte[memoryStream.Length];
+                memoryStream.Read(imageBytes, 0, (int)memoryStream.Length);
+                ImageBase64 = Convert.ToBase64String(imageBytes);
+                await OnSelectedImage.InvokeAsync(ImageBase64);
+                ImageUrl = null;
+                StateHasChanged();
+            }
+        }
+
+    }
+}

@@ -1,6 +1,6 @@
 ﻿namespace LibShare.Client.Data.ApiModels
 {
-    public class LoginApiModel
+    public class EmailApiModel
     {
         /// <summary>
         /// User email
@@ -8,11 +8,6 @@
         /// <example>example@gmail.com</example>
         public string Email { get; set; }
 
-        /// <summary>
-        /// User password
-        /// </summary>
-        /// <example>Qwerty1-</example>
-        public string Password { get; set; }
 
         /// <summary>
         /// Google Recaptcha Token

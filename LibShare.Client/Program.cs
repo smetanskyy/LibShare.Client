@@ -1,12 +1,15 @@
+using LibShare.Client.Data.Interfaces;
+using LibShare.Client.Data.Interfaces.IRepositories;
+using LibShare.Client.Data.Repositories;
+using LibShare.Client.Data.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
+using System.Reflection;
+using System.Resources;
 using System.Threading.Tasks;
+using Tewr.Blazor.FileReader;
 
 namespace LibShare.Client
 {
@@ -18,6 +21,19 @@ namespace LibShare.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            #region Resources.Messages
+            builder.Services.AddSingleton(new ResourceManager("LibShare.Client.Data.Resources.Messages", Assembly.GetExecutingAssembly()));
+            #endregion
+
+            #region BlazorFileReader
+            builder.Services.AddFileReaderService(options => options.InitializeOnFirstCall = true);
+            #endregion
+
+            #region Interfaces
+            builder.Services.AddTransient<IAccountRepository, AccountRepository>();
+            builder.Services.AddTransient<IHttpService, HttpService>();
+            #endregion
 
             await builder.Build().RunAsync();
         }

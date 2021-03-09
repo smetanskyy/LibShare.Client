@@ -1,18 +1,17 @@
 ﻿namespace LibShare.Client.Data.ApiModels
 {
-    public class LoginApiModel
+    public class ConfirmApiModel
     {
         /// <summary>
         /// User email
-        /// </summary>     
+        /// </summary>
         /// <example>example@gmail.com</example>
         public string Email { get; set; }
 
         /// <summary>
-        /// User password
+        /// Secure token for reset password
         /// </summary>
-        /// <example>Qwerty1-</example>
-        public string Password { get; set; }
+        public string Token { get; set; }
 
         /// <summary>
         /// Google Recaptcha Token

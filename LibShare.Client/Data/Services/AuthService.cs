@@ -1,13 +1,13 @@
-﻿using LibShare.Client.ApiModels;
+﻿using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Interfaces;
 
 namespace LibShare.Client.Data.Services
 {
     public class AuthService : IAuthService
     {
-        public JWTApiModel Login(LoginApiModel model)
+        public TokenApiModel Login(LoginApiModel model)
         {
-            return new JWTApiModel { RefreshToken = "some", Token = "some" };
+            return new TokenApiModel { RefreshToken = "some", Token = "some" };
         }
     }
 }
