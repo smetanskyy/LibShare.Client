@@ -1,47 +1,8 @@
 ﻿@page "/"
 @page "/index"
 @inject NavigationManager navigationManager
-<div class="container">
-    <EditForm EditContext="EditContext" OnValidSubmit="ClickMe">
-        <DataAnnotationsValidator />
-        <div class="col-md-8">
-            <div class="form-group">
-                <label class="label">Email: </label>
-                <input @onmouseout="Validate" @bind-value="Model.Message" />
-                <ValidationMessage For="@(() => Model.Message)" />
-            </div>
 
-            <div class="form-group">
-                <label class="label">Email: </label>
-                <input @onmouseout="Validate" @bind-value="Model.Message2" />
-                <ValidationMessage For="@(() => Model.Message2)" />
-            </div>
-        </div>
-        <button class="my-5" type="submit">SUBMIT</button>
-    </EditForm>
-</div>
 
-@code{
-    public MessageApiModel Model { get; set; } = new MessageApiModel();
-    EditForm EditForm { get; set; }
-    EditContext EditContext { get; set; }
-
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(Model);
-        navigationManager.NavigateTo("/profile-edit");
-    }
-
-    void Validate()
-    {
-        EditContext.Validate();
-        Console.WriteLine("Good Validate!");
-    }
-
-    void ClickMe()
-    {
-        Console.WriteLine("Good Stuff!");
-    }
-
+@code {
 
 }

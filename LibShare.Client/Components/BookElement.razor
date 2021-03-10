@@ -1,0 +1,31 @@
+﻿@if (Book != null)
+{
+    <div class="col-md-6 col-lg-4 d-flex">
+        <div class="book-wrap d-lg-flex">
+            <div class="img d-flex justify-content-end" style="background-image:url(@SetImageUrl())">
+                <div class="in-text">
+                    @if (Book.IsEbook == false)
+                    {
+                        <a href="#" class="icon d-flex align-items-center justify-content-center" data-toggle="tooltip" data-placement="left" title="@callToOwner">
+                            <span class="flaticon-shopping-cart"></span>
+                        </a>
+                    }
+                    @if (Book.IsEbook == true)
+                    {
+                        <a href="#" class="icon d-flex align-items-center justify-content-center" data-toggle="tooltip" data-placement="left" title="@download">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                        </a>
+                    }
+                    <a href="#" class="icon d-flex align-items-center justify-content-center" data-toggle="tooltip" data-placement="left" title="@view">
+                        <span class="flaticon-search"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="text p-4">
+                <h2><a href="#">@SetFieldShorter(Book.Title)</a></h2>
+                <span class="position price">@SetFieldShorter(Book.Author)</span>
+            </div>
+        </div>
+    </div>
+
+}

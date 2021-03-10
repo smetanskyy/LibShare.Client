@@ -1,5 +1,6 @@
 ﻿using LibShare.Client.Components;
 using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Interfaces.IRepositories;
 using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -16,6 +17,9 @@ namespace LibShare.Client.Pages
         IJSRuntime JSRuntime { get; set; }
         [Inject]
         HttpClient Http { get; set; }
+
+        [Inject]
+        IAccountRepository accountRepository { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
@@ -42,24 +46,17 @@ namespace LibShare.Client.Pages
             try
             {
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
-                var response = await Http.PostAsJsonAsync("http://localhost:5050/api/account/register", Model);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var content = response.Content.ReadFromJsonAsync<MessageApiModel>().Result;
-                    Console.WriteLine(content.Message);
-                    ErrorMessage = content.Message;
-                    StateHasChanged();
-                    return;
-                }
-                var jwt = await response.Content.ReadFromJsonAsync<TokenApiModel>();
+                Model.UserName = Model.Email;
+                var response = await accountRepository.RegisterUserAsync(Model);
+                NavigationManager.NavigateTo("/index");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return;
+                ErrorMessage = ex.Message;
             }
             finally
             {
+                StateHasChanged();
                 LoadSpinner.Hide();
             }
         }

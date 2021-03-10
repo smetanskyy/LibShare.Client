@@ -3,8 +3,7 @@ using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using LibShare.Client.Data.Interfaces.IRepositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace LibShare.Client.Data.Repositories
@@ -16,14 +15,10 @@ namespace LibShare.Client.Data.Repositories
         {
             _httpService = httpService;
         }
-        public async Task<UserApiModel> CreateAsync(UserApiModel item)
+
+        public async Task<UserApiModel> CreateAsync(UserApiModel model)
         {
-            var response = await _httpService.Post(ApiUrls.ClientEditProfile, item);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return (UserApiModel)response.Response;
+            return await _httpService.Post<UserApiModel, UserApiModel>(ApiUrls.ClientEditProfile, model);
         }
 
         public Task<UserApiModel> DeleteAsync(string id, string deletionReason)
@@ -36,9 +31,14 @@ namespace LibShare.Client.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TokenApiModel> LoginUserAsync(LoginApiModel model)
+        public async Task<TokenApiModel> LoginUserAsync(LoginApiModel model)
         {
-            throw new NotImplementedException();
+            return await _httpService.Post<LoginApiModel, TokenApiModel>(ApiUrls.LoginUrl, model);
+        }
+
+        public async Task<TokenApiModel> RegisterUserAsync(RegisterApiModel model)
+        {
+            return await _httpService.Post<RegisterApiModel, TokenApiModel>(ApiUrls.RegisterUrl, model);
         }
 
         public Task<UserApiModel> UpdateAsync(UserApiModel item)

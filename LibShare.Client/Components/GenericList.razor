@@ -1,37 +1,19 @@
 ﻿@typeparam TItem
-@if (List == null)
-{
-    <div class="loader">
-        <div class="lineLoader oneLineLoader"></div>
-        <div class="lineLoader twoLineLoader"></div>
-        <div class="lineLoader threeLineLoader"></div>
+<section class="ftco-section">
+    <div class="container-fluid px-md-5">
+        <div class="row">
+            @if (List != null)
+            {
+                @foreach (var item in List)
+                {
+                    @ElementTemplate(item)
+                }
+            }
+        </div>
     </div>
-}
-else if (List.Count == 0)
-{
-    if (EmptyFragment != null)
-    {
-        @EmptyFragment
-    }
-    else
-    {
-        <text> Список пустий! </text>
-    }
-}
-else
-{
-    foreach (var item in List)
-    {
-        @ElementTemplate(item)
-    }
-
-}
-
+</section>
 
 @code {
-    [Parameter]
-    public RenderFragment EmptyFragment { get; set; }
-
     [Parameter]
     public RenderFragment<TItem> ElementTemplate { get; set; }
 

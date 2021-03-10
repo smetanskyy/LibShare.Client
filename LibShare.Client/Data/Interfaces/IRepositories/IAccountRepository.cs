@@ -6,5 +6,6 @@ namespace LibShare.Client.Data.Interfaces.IRepositories
     interface IAccountRepository : ICrudRepository<UserApiModel, string>
     {
         Task<TokenApiModel> LoginUserAsync(LoginApiModel model);
+        Task<TokenApiModel> RegisterUserAsync(RegisterApiModel model);
     }
 }

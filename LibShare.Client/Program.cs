@@ -33,6 +33,7 @@ namespace LibShare.Client
             #region Interfaces
             builder.Services.AddTransient<IAccountRepository, AccountRepository>();
             builder.Services.AddTransient<IHttpService, HttpService>();
+            builder.Services.AddTransient<ILibraryService, LibraryService>();
             #endregion
 
             await builder.Build().RunAsync();

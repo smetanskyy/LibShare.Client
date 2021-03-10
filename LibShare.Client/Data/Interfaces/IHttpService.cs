@@ -1,10 +1,11 @@
-﻿using LibShare.Client.Helpers;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace LibShare.Client.Data.Interfaces
 {
     public interface IHttpService
     {
-        Task<HttpResponseWrapper<object>> Post<T>(string url, T data);
+        Task<TResponse> Get<TResponse>(string url);
+        Task<TResponse> Post<TRequest, TResponse>(string url, TRequest data);
+        Task<TResponse> PostAsJsonAsync<TRequest, TResponse>(string url, TRequest data);
     }
 }

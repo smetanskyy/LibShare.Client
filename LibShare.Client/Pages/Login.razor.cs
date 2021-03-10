@@ -1,4 +1,6 @@
-﻿using LibShare.Client.Data.ApiModels;
+﻿using LibShare.Client.Components;
+using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Interfaces.IRepositories;
 using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,12 +14,19 @@ namespace LibShare.Client.Pages
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
-        public LoginApiModel Model { get; set; }
-        protected override void OnInitialized()
-        {
-            Model = new LoginApiModel();
-            base.OnInitialized();
-        }
+        [Inject]
+        IAccountRepository accountRepository { get; set; }
+
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        public LoginApiModel Model { get; set; } = new LoginApiModel();
+
+        [CascadingParameter]
+        private Spinner LoadSpinner { get; set; }
+
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -27,11 +36,29 @@ namespace LibShare.Client.Pages
             }
         }
 
-        private async void OnSubmit()
+        private async void OnSubmitHandle()
         {
-            Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
-            Console.WriteLine(Model.RecaptchaToken);
-            Console.WriteLine("Form Submitted Successfully!");
+            LoadSpinner.Show();
+            try
+            {
+                Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
+                var response = await accountRepository.LoginUserAsync(Model);
+                NavigationManager.NavigateTo("/index");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+            finally
+            {
+                StateHasChanged();
+                LoadSpinner.Hide();
+            }
+        }
+
+        void ClearErrorMessage()
+        {
+            ErrorMessage = null;
         }
 
         public void Dispose()

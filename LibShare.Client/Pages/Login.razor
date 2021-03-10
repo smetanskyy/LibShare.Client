@@ -8,16 +8,17 @@
                 <div class="row no-gutters">
                     <div class="contact-wrap w-100 p-md-5 p-4">
                         <h3 class="mb-4">Увійти в акаунт</h3>
-                        <EditForm method="POST" id="loginForm" name="loginForm" class="contactForm"
-                                  Model="@Model" OnValidSubmit="OnSubmit">
+                        <EditForm @oninput="@ClearErrorMessage" method="POST" id="loginForm" name="loginForm" class="contactForm"
+                                  Model="@Model" OnValidSubmit="OnSubmitHandle">
                             <FluentValidationValidator />
+                            <text class="text-danger">@ErrorMessage</text>
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="form-group">
                                         <label class="label" for="email">Email: </label>
                                         <InputText type="email" class="form-control" name="email" id="email" placeholder="Email"
                                                    @bind-Value="Model.Email" />
-                                        <ValidationMessage For="@(() => Model.Email)" />
+                                        <ValidationMessage class="text-danger" For="@(() => Model.Email)" />
                                     </div>
                                 </div>
                                 <div class="col-md-10">
@@ -25,7 +26,7 @@
                                         <label class="label" for="password">Пароль: </label>
                                         <InputText type="password" class="form-control" name="password" id="password" placeholder="Пароль"
                                                    @bind-Value="Model.Password" />
-                                        <ValidationMessage For="@(() => Model.Password)" />
+                                        <ValidationMessage class="text-danger" For="@(() => Model.Password)" />
                                     </div>
                                 </div>
                                 <div class="col-md-10">
