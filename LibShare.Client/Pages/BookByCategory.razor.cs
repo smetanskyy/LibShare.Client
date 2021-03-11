@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class AllBooks
+    public partial class BookByCategory
     {
         [Inject]
         ILibraryService LibraryService { get; set; }
-
+        [Inject]
+        NavigationManager navigationManager { get; set; }
         private Spinner LoadSpinner { get; set; }
         [Parameter] public int PageSize { get; set; } = 12;
         [Parameter] public int PageNumber { get; set; } = 1;
@@ -23,12 +24,11 @@ namespace LibShare.Client.Pages
 
         public int TotalAmountPages { get; set; } = 1;
         public List<BookApiModel> BooksList { get; set; }
-        public List<CategoryApiModel> Categories { get; set; }
-
         public string ErrorMessage { get; set; }
 
         private void GetParametersFromUrl()
         {
+            // http://localhost:5050/api/library/books-filter?chosenCategory=0&pageSize=12&pageNumber=1&onlyEbooks=false&onlyRealBooks=false
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
 
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("pageSize", out var pageSize))
@@ -91,8 +91,6 @@ namespace LibShare.Client.Pages
                 var response = await LibraryService.GetAllBooks(link);
                 BooksList = response.List;
 
-                Categories = await LibraryService.GetCategories(ApiUrls.LibraryAllCategories);
-
                 PageNumber = response.CurrentPage;
                 TotalAmountPages = response.TotalPages;
 
@@ -109,7 +107,7 @@ namespace LibShare.Client.Pages
         {
             await LoadBooks(page);
             PageNumber = page;
-            var link = SetBaseUrlQuery("/books");
+            var link = SetBaseUrlQuery("/categoty");
             navigationManager.NavigateTo(link);
         }
     }

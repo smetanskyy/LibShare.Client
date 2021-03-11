@@ -76,7 +76,7 @@ namespace LibShare.Client.Pages
         {
             GetParametersFromUrl();
             Console.WriteLine("Hello from OnInitializedAsync Books from Server");
-            await SelectedPage(PageNumber);
+            await LoadBooks(PageNumber);
         }
 
         private async Task LoadBooks(int pageYouNeed)
