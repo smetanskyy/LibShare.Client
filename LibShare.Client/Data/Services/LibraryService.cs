@@ -25,17 +25,7 @@ namespace LibShare.Client.Data.Services
             return await _httpService.Put<string, MessageApiModel>(url, "Delete Book");
         }
 
-        public async Task<PagedListApiModel<BookApiModel>> FilterByCategory(string url)
-        {
-            return await _httpService.Get<PagedListApiModel<BookApiModel>>(url);
-        }
-
-        public async Task<PagedListApiModel<BookApiModel>> FilterByMultiCategory(string url)
-        {
-            return await _httpService.Get<PagedListApiModel<BookApiModel>>(url);
-        }
-
-        public async Task<PagedListApiModel<BookApiModel>> GetAllBooks(string url)
+        public async Task<PagedListApiModel<BookApiModel>> GetBooks(string url)
         {
             return await _httpService.Get<PagedListApiModel<BookApiModel>>(url);
         }
@@ -45,19 +35,14 @@ namespace LibShare.Client.Data.Services
             return await _httpService.Get<BookApiModel>(url);
         }
 
-        public async Task<PagedListApiModel<BookApiModel>> GetBooksByUserId(string url)
-        {
-            return await _httpService.Get<PagedListApiModel<BookApiModel>>(url);
-        }
-
         public async Task<List<CategoryApiModel>> GetCategories(string url)
         {
             return await _httpService.Get<List<CategoryApiModel>>(url);
         }
 
-        public async Task<PagedListApiModel<BookApiModel>> Search(string url)
+        public async Task<CategoryApiModel> GetCategory(string url)
         {
-            return await _httpService.Get<PagedListApiModel<BookApiModel>>(url);
+            return await _httpService.Get<CategoryApiModel>(url);
         }
 
         public async Task<BookApiModel> UpdateBookAsync(string url, BookApiModel book)

@@ -45,7 +45,7 @@
                                 <ul>
                                     @foreach (var item in Categories)
                                     {
-                                        <li><a href="#">@item.Name <span class="fa fa-chevron-right"></span></a></li>
+                                        <li><a href="@SetCategoryRefer(item.Id)">@item.Name <span class="fa fa-chevron-right"></span></a></li>
                                     }
                                 </ul>
                             }

@@ -86,7 +86,7 @@ namespace LibShare.Client.Pages
                 PageNumber = pageYouNeed;
                 var link = SetBaseUrlQuery(ApiUrls.LibraryAllBooks);
 
-                var response = await LibraryService.GetAllBooks(link);
+                var response = await LibraryService.GetBooks(link);
                 BooksList = response.List;
 
                 PageNumber = response.CurrentPage;

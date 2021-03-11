@@ -24,13 +24,22 @@ namespace LibShare.Client.Pages
 
         public int TotalAmountPages { get; set; } = 1;
         public List<BookApiModel> BooksList { get; set; }
+        public CategoryApiModel Category { get; set; } = new CategoryApiModel();
+        public string CategoryId { get; set; } = "8";
         public string ErrorMessage { get; set; }
 
         private void GetParametersFromUrl()
         {
-            // http://localhost:5050/api/library/books-filter?chosenCategory=0&pageSize=12&pageNumber=1&onlyEbooks=false&onlyRealBooks=false
+            // http://localhost:5050/api/library/books-filter
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
-
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("chosenCategory", out var chosenCategory))
+            {
+                CategoryId = chosenCategory;
+            }
+            else
+            {
+                CategoryId = "8";
+            }
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("pageSize", out var pageSize))
             {
                 PageSize = int.Parse(pageSize);
@@ -67,7 +76,8 @@ namespace LibShare.Client.Pages
 
         private string SetBaseUrlQuery(string baseUrl)
         {
-            var query = QueryHelpers.AddQueryString(baseUrl, "pageSize", PageSize.ToString());
+            var query = QueryHelpers.AddQueryString(baseUrl, "chosenCategory", CategoryId);
+            query = QueryHelpers.AddQueryString(query, "pageSize", PageSize.ToString());
             query = QueryHelpers.AddQueryString(query, "pageNumber", PageNumber.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyEbooks", OnlyEbooks.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyRealBooks", OnlyRealBooks.ToString());
@@ -78,7 +88,21 @@ namespace LibShare.Client.Pages
         {
             GetParametersFromUrl();
             Console.WriteLine("Hello from OnInitializedAsync Books from Server");
+            await LoadGetogory();
             await LoadBooks(PageNumber);
+        }
+
+        private async Task LoadGetogory()
+        {
+            try
+            {
+                var urlServer = QueryHelpers.AddQueryString(ApiUrls.LibraryCategory, "categoryId", CategoryId);
+                Category = await LibraryService.GetCategory(urlServer);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
         }
 
         private async Task LoadBooks(int pageYouNeed)
@@ -86,9 +110,10 @@ namespace LibShare.Client.Pages
             try
             {
                 PageNumber = pageYouNeed;
-                var link = SetBaseUrlQuery(ApiUrls.LibraryAllBooks);
+                var link = SetBaseUrlQuery(ApiUrls.LibraryBooksFilter);
+                Console.WriteLine("Link filter simple " + link);
 
-                var response = await LibraryService.GetAllBooks(link);
+                var response = await LibraryService.GetBooks(link);
                 BooksList = response.List;
 
                 PageNumber = response.CurrentPage;
@@ -107,7 +132,7 @@ namespace LibShare.Client.Pages
         {
             await LoadBooks(page);
             PageNumber = page;
-            var link = SetBaseUrlQuery("/categoty");
+            var link = SetBaseUrlQuery("/category");
             navigationManager.NavigateTo(link);
         }
     }

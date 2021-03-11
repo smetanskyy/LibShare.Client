@@ -88,7 +88,7 @@ namespace LibShare.Client.Pages
                 PageNumber = pageYouNeed;
                 var link = SetBaseUrlQuery(ApiUrls.LibraryAllBooks);
 
-                var response = await LibraryService.GetAllBooks(link);
+                var response = await LibraryService.GetBooks(link);
                 BooksList = response.List;
 
                 Categories = await LibraryService.GetCategories(ApiUrls.LibraryAllCategories);
@@ -111,6 +111,11 @@ namespace LibShare.Client.Pages
             PageNumber = page;
             var link = SetBaseUrlQuery("/books");
             navigationManager.NavigateTo(link);
+        }
+
+        private string SetCategoryRefer(string categoryId)
+        {
+            return QueryHelpers.AddQueryString("/category", "chosenCategory", categoryId);
         }
     }
 }

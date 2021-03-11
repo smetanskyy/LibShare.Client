@@ -25,6 +25,7 @@ namespace LibShare.Client.Data.Constants
         public static string FileUpload { get; set; } = ApiBaseUrl + "/api/file/upload";
         public static string FileDownload { get; set; } = ApiBaseUrl + "/api/file/download";
         public static string LibraryAllCategories { get; set; } = ApiBaseUrl + "/api/library/all-categories";
+        public static string LibraryCategory { get; set; } = ApiBaseUrl + "/api/library/category";
         public static string LibraryAllBooks { get; set; } = ApiBaseUrl + "/api/library/books";
         public static string LibraryAddBook { get; set; } = ApiBaseUrl + "/api/library/add-book";
         public static string LibraryBooksMultifilter { get; set; } = ApiBaseUrl + "/api/library/books-multifilter";
