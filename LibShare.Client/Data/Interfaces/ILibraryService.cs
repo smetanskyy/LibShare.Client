@@ -8,15 +8,15 @@ namespace LibShare.Client.Data.Interfaces
 {
     interface ILibraryService
     {
-        //Task<IEnumerable<CategoryApiModel>> GetCategories();
-        //Task<BookApiModel> CreateBookAsync(string url, BookApiModel book);
-        //Task<BookApiModel> GetBookByIdAsync(string url);
-        //Task<BookApiModel> UpdateBookAsync(string url, BookApiModel book);
-        //Task<MessageApiModel> DeleteBookAsync(string url);
+        Task<List<CategoryApiModel>> GetCategories(string url);
+        Task<BookApiModel> CreateBookAsync(string url, BookApiModel book);
+        Task<BookApiModel> GetBookByIdAsync(string url);
+        Task<BookApiModel> UpdateBookAsync(string url, BookApiModel book);
+        Task<MessageApiModel> DeleteBookAsync(string url);
         Task<PagedListApiModel<BookApiModel>> GetAllBooks(string url);
-        //Task<PagedListApiModel<BookApiModel>> Search(string url);
-        //Task<PagedListApiModel<BookApiModel>> FilterByMultiCategory(string url);
-        //Task<PagedListApiModel<BookApiModel>> FilterByCategory(string url);
-        //Task<PagedListApiModel<BookApiModel>> GetBooksByUserId(string url);
+        Task<PagedListApiModel<BookApiModel>> Search(string url);
+        Task<PagedListApiModel<BookApiModel>> FilterByMultiCategory(string url);
+        Task<PagedListApiModel<BookApiModel>> FilterByCategory(string url);
+        Task<PagedListApiModel<BookApiModel>> GetBooksByUserId(string url);
     }
 }

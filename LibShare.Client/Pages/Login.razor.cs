@@ -24,7 +24,6 @@ namespace LibShare.Client.Pages
 
         public LoginApiModel Model { get; set; } = new LoginApiModel();
 
-        [CascadingParameter]
         private Spinner LoadSpinner { get; set; }
 
 
@@ -43,16 +42,14 @@ namespace LibShare.Client.Pages
             {
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
                 var response = await accountRepository.LoginUserAsync(Model);
+                LoadSpinner.Hide();
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
-            }
-            finally
-            {
-                StateHasChanged();
                 LoadSpinner.Hide();
+
             }
         }
 

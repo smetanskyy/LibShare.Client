@@ -29,7 +29,6 @@ namespace LibShare.Client.Pages
 
         public string ErrorMessage { get; set; }
 
-        [CascadingParameter]
         private Spinner LoadSpinner { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -48,15 +47,12 @@ namespace LibShare.Client.Pages
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
                 Model.UserName = Model.Email;
                 var response = await accountRepository.RegisterUserAsync(Model);
+                LoadSpinner.Hide();
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
-            }
-            finally
-            {
-                StateHasChanged();
                 LoadSpinner.Hide();
             }
         }

@@ -7,5 +7,6 @@ namespace LibShare.Client.Data.Interfaces
         Task<TResponse> Get<TResponse>(string url);
         Task<TResponse> Post<TRequest, TResponse>(string url, TRequest data);
         Task<TResponse> PostAsJsonAsync<TRequest, TResponse>(string url, TRequest data);
+        Task<TResponse> Put<TRequest, TResponse>(string url, TRequest model);
     }
 }

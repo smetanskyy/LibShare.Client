@@ -33,7 +33,7 @@ namespace LibShare.Client.Data.Services
             {
                 throw new ApplicationException(ErrorMesssages.ServerNotFound);
             }
-
+            
             return await Deserialize<TResponse>(response, defaultJsonSerializerOptions);
         }
 
@@ -43,6 +43,24 @@ namespace LibShare.Client.Data.Services
             try
             {
                 response = await _httpClient.GetAsync(url);
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException(ErrorMesssages.ServerNotFound);
+            }
+
+            return await Deserialize<TResponse>(response, defaultJsonSerializerOptions);
+        }
+
+        public async Task<TResponse> Put<TRequest, TResponse>(string url, TRequest model)
+        {
+            var dataJson = JsonSerializer.Serialize(model);
+            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.PutAsync(url, stringContent);
             }
             catch (Exception)
             {

@@ -1,12 +1,13 @@
 ﻿@page "/profile-edit"
 <h3>ProfileEdit</h3>
-
+<Spinner @ref="LoadSpinner" />
 <InputImage Label="Фото користувача" OnSelectedImage="PhotoSelected" ImageUrl="@PhotoUrl" />
 
 @code {
     [Parameter]
     public UserApiModel UserModel { get; set; } = new UserApiModel();
 
+    public Spinner LoadSpinner { get; set; }
     public string PhotoUrl { get; set; }
 
     protected override void OnInitialized()

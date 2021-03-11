@@ -1,21 +1,16 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
 
-<Spinner @ref="LoadSpinner" />
 <AboveNavMenu />
 <NavMenu />
 
 <div>
-    <CascadingValue Value="LoadSpinner">
-        @Body
-    </CascadingValue>
+    @Body
 </div>
 
 <Footer />
 
 @code {
-    public Spinner LoadSpinner { get; set; }
-
     protected override async void OnAfterRender(bool firstRender)
     {
         await JSRuntime.RenderJS();

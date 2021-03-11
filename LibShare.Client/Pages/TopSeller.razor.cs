@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class AllBooks
+    public partial class TopSeller
     {
         [Inject]
         ILibraryService LibraryService { get; set; }
@@ -23,8 +23,6 @@ namespace LibShare.Client.Pages
 
         public int TotalAmountPages { get; set; } = 1;
         public List<BookApiModel> BooksList { get; set; }
-        public List<CategoryApiModel> Categories { get; set; }
-
         public string ErrorMessage { get; set; }
 
         private void GetParametersFromUrl()
@@ -91,8 +89,6 @@ namespace LibShare.Client.Pages
                 var response = await LibraryService.GetAllBooks(link);
                 BooksList = response.List;
 
-                Categories = await LibraryService.GetCategories(ApiUrls.LibraryAllCategories);
-
                 PageNumber = response.CurrentPage;
                 TotalAmountPages = response.TotalPages;
 
@@ -109,7 +105,7 @@ namespace LibShare.Client.Pages
         {
             await LoadBooks(page);
             PageNumber = page;
-            var link = SetBaseUrlQuery("/books");
+            var link = SetBaseUrlQuery("/top-seller");
             navigationManager.NavigateTo(link);
         }
     }

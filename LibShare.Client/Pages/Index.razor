@@ -1,8 +1,11 @@
 ﻿@page "/"
 @page "/index"
+<Spinner @ref="LoadSpinner" />
 @inject NavigationManager navigationManager
 
-
 @code {
-
+    public Spinner LoadSpinner { get; set; }
+    protected override void OnInitialized()
+    {
+    }
 }

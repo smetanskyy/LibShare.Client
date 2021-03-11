@@ -1,17 +1,12 @@
 ﻿@typeparam TItem
-<section class="ftco-section">
-    <div class="container-fluid px-md-5">
-        <div class="row">
-            @if (List != null)
-            {
-                @foreach (var item in List)
-                {
-                    @ElementTemplate(item)
-                }
-            }
-        </div>
-    </div>
-</section>
+
+@if (List != null)
+{
+    @foreach (var item in List)
+    {
+        @ElementTemplate(item)
+    }
+}
 
 @code {
     [Parameter]

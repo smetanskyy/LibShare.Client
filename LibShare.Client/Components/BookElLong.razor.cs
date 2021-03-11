@@ -5,14 +5,14 @@ using System;
 
 namespace LibShare.Client.Components
 {
-    public partial class BookElement
+    public partial class BookElLong
     {
-        private static readonly Random _random = new Random();
+        private static readonly Random _randomElLong = new Random();
         [Inject]
         NavigationManager navigationManager { get; set; }
 
         [Parameter]
-        public BookApiModel Book { get; set; }
+        public BookApiModel BookItem { get; set; }
 
         private string download = "Завантажити книгу";
         private string callToOwner = "Зв'язатися з власником книги";
@@ -20,7 +20,7 @@ namespace LibShare.Client.Components
 
         private string SetRandomImage()
         {
-            return $"/images/book-{_random.Next(1, 6)}.jpg";
+            return $"/images/book-{_randomElLong.Next(1, 6)}.jpg";
         }
 
         private string SetFieldShorter(string field)
@@ -35,12 +35,12 @@ namespace LibShare.Client.Components
 
         private string SetImageUrl()
         {
-            return Book.Image ?? SetRandomImage();
+            return BookItem.Image ?? SetRandomImage();
         }
 
         private string ReferToBook()
         {
-            return QueryHelpers.AddQueryString("/book", "bookId", Book.Id);
+            return QueryHelpers.AddQueryString("/book", "bookId", BookItem.Id);
         }
 
         private void ReferToBookClick()
