@@ -2,6 +2,11 @@
 
 @if (List != null)
 {
+    if (List.Count == 0)
+    {
+        <h3 style="color: indianred" class="my-4 text-center">Список пустий!</h3>
+
+    }
     @foreach (var item in List)
     {
         @ElementTemplate(item)

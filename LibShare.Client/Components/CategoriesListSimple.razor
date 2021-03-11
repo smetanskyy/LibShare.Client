@@ -1,0 +1,23 @@
+﻿<div class="categories">
+    <h2>Категорії</h2>
+    @if (CategoriesList != null)
+    {
+        <ul>
+            @foreach (var item in CategoriesList)
+            {
+                <li @onclick="@(() => SelectedCategoryOnClick(item.Id))" style="cursor: pointer"><span style="font-size: 15px;" >@item.Name <span class=" fa fa-chevron-right"></span></span></li>
+            }
+        </ul>
+    }
+</div>
+
+@code{
+    [Parameter] public List<CategoryApiModel> CategoriesList { get; set; }
+
+    [Parameter] public EventCallback<string> CategoryOnClick { get; set; }
+
+    private async Task SelectedCategoryOnClick(string categoryId)
+    {
+        await CategoryOnClick.InvokeAsync(categoryId);
+    }
+}

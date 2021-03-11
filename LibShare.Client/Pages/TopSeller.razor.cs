@@ -20,6 +20,7 @@ namespace LibShare.Client.Pages
         [Parameter] public int PageNumber { get; set; } = 1;
         [Parameter] public bool OnlyEbooks { get; set; } = false;
         [Parameter] public bool OnlyRealBooks { get; set; } = false;
+        [Parameter] public string SortOrder { get; set; } = "10";
 
         public int TotalAmountPages { get; set; } = 1;
         public List<BookApiModel> BooksList { get; set; }
@@ -69,6 +70,7 @@ namespace LibShare.Client.Pages
             query = QueryHelpers.AddQueryString(query, "pageNumber", PageNumber.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyEbooks", OnlyEbooks.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyRealBooks", OnlyRealBooks.ToString());
+            query = QueryHelpers.AddQueryString(query, "sortOrder", SortOrder);
             return query;
         }
 

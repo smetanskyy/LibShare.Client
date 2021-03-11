@@ -14,12 +14,12 @@
             <a class="navbar-brand" href="index">Книжковий обмін <span>Онлайн</span> <small>Зазирни у книжковий світ!</small></a>
         </div>
         <div class="col-md-3 d-inline-flex justify-content-center">
-            <form action="#" class="searchform order-lg-last">
+            <EditForm OnSubmit="Search" method="GET" class="searchform order-lg-last">
                 <div class="form-group d-flex">
-                    <input type="text" class="form-control pl-3" placeholder="Пошук">
+                    <InputText @bind-Value="@searchField" type="text" class="form-control pl-3" placeholder="Пошук" />
                     <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
                 </div>
-            </form>
+            </EditForm>
         </div>
     </div>
 </div>

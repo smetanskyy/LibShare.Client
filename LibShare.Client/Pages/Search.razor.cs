@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class AllBooks
+    public partial class Search
     {
         [Inject]
         ILibraryService LibraryService { get; set; }
@@ -20,8 +20,10 @@ namespace LibShare.Client.Pages
         [Parameter] public bool OnlyRealBooks { get; set; } = false;
         [Parameter] public string SortOrder { get; set; } = "1";
 
+        [Parameter] public string SearchField { get; set; }
+
         public int TotalAmountPages { get; set; } = 1;
-        public List<BookApiModel> BooksList { get; set; }
+        [Parameter] public List<BookApiModel> BooksList { get; set; }
         public List<CategoryApiModel> Categories { get; set; }
 
         public string ErrorMessage { get; set; }
@@ -29,6 +31,15 @@ namespace LibShare.Client.Pages
         private void GetParametersFromUrl()
         {
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("search", out var searchFromQuery))
+            {
+                SearchField = searchFromQuery;
+            }
+            else
+            {
+                SearchField = "";
+            }
 
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("pageSize", out var pageSize))
             {
@@ -74,7 +85,8 @@ namespace LibShare.Client.Pages
 
         private string SetBaseUrlQuery(string baseUrl)
         {
-            var query = QueryHelpers.AddQueryString(baseUrl, "pageSize", PageSize.ToString());
+            var query = QueryHelpers.AddQueryString(baseUrl, "search", SearchField);
+            query = QueryHelpers.AddQueryString(query, "pageSize", PageSize.ToString());
             query = QueryHelpers.AddQueryString(query, "pageNumber", PageNumber.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyEbooks", OnlyEbooks.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyRealBooks", OnlyRealBooks.ToString());
@@ -87,7 +99,8 @@ namespace LibShare.Client.Pages
         {
             GetParametersFromUrl();
             Console.WriteLine("Hello from OnInitializedAsync Books from Server");
-            await LoadBooks(PageNumber);
+            if (BooksList == null)
+                await LoadBooks(PageNumber);
         }
 
         private async Task LoadBooks(int pageYouNeed)
@@ -95,7 +108,7 @@ namespace LibShare.Client.Pages
             try
             {
                 PageNumber = pageYouNeed;
-                var link = SetBaseUrlQuery(ApiUrls.LibraryAllBooks);
+                var link = SetBaseUrlQuery(ApiUrls.LibraryBooksSearch);
 
                 var response = await LibraryService.GetBooks(link);
                 BooksList = response.List;
@@ -121,7 +134,7 @@ namespace LibShare.Client.Pages
         {
             await LoadBooks(page);
             PageNumber = page;
-            var link = SetBaseUrlQuery("/books");
+            var link = SetBaseUrlQuery("/search");
             navigationManager.NavigateTo(link);
             StateHasChanged();
         }

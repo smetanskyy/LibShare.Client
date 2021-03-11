@@ -1,6 +1,4 @@
 ﻿@page "/category"
-<Spinner @ref="LoadSpinner" />
-
 <section class="hero-wrap hero-wrap-2" style="background-image:url(images/bg_5.jpg)" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
@@ -15,17 +13,42 @@
 
 @if (BooksList != null)
 {
-    <section class="ftco-section">
-        <div class="container-fluid px-md-5">
+    <section class="ftco-section ftco-degree-bg">
+        <div class="container">
             <div class="row">
-                <GenericList List="@BooksList">
-                    <ElementTemplate>
-                        <BookElement Book="context"></BookElement>
-                    </ElementTemplate>
-                </GenericList>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <GenericList List="@BooksList">
+                            <ElementTemplate>
+                                <BookElLong BookItem="context"></BookElLong>
+                            </ElementTemplate>
+                        </GenericList>
+                    </div>
+                    @if (TotalAmountPages > 1)
+                    {
+                        <Pagination CurrentPage="PageNumber" TotalAmountPages="TotalAmountPages" SelectedPage="SelectedPage" />
+                    }
+                </div>
+                <div class="col-lg-3 sidebar pl-lg-3">
+                    <div class="sidebar-box">
+                        <SelectCategoryToolBox SelectOrderSortClicked="SelectSortClicked" />
+                        <div class="my-5">
+                            <ToolBox CheckboxEBookClicked="CheckboxEBookClicked" CheckboxRealBookClicked="CheckboxRealBookClicked" OnlyEbooks="OnlyEbooks" OnlyRealBooks="OnlyRealBooks" />
+                        </div>
+                    </div>
+                    <div class="sidebar-box">
+                        <CategoriesListSimple CategoriesList="@Categories" CategoryOnClick="CategoryOnClick"/>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-
-    <Pagination CurrentPage="PageNumber" TotalAmountPages="TotalAmountPages" SelectedPage="SelectedPage" />
+}
+else if (ErrorMessage != null)
+{
+    <h3 class="my-4 text-center">Помилка сервера: <span style="color: indianred">@ErrorMessage</span> </h3>
+}
+else
+{
+    <Spinner SpinnerToggle="@true"></Spinner>
 }

@@ -27,6 +27,16 @@
             </div>
         </div>
     </section>
-
-    <Pagination CurrentPage="PageNumber" TotalAmountPages="TotalAmountPages" SelectedPage="SelectedPage" />
+    @if (TotalAmountPages > 1)
+    {
+        <Pagination CurrentPage="PageNumber" TotalAmountPages="TotalAmountPages" SelectedPage="SelectedPage" />
+    }
+}
+else if (ErrorMessage != null)
+{
+    <h3 class="my-4 text-center">Помилка сервера: <span style="color: indianred">@ErrorMessage</span> </h3>
+}
+else
+{
+    <Spinner SpinnerToggle="@true"></Spinner>
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Data.Interfaces
 {
-    interface ILibraryService
+    public interface ILibraryService
     {
         Task<CategoryApiModel> GetCategory(string url);
         Task<List<CategoryApiModel>> GetCategories(string url);

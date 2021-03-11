@@ -1,0 +1,18 @@
+﻿<div class="form-group">
+    <div class="form-check">
+        <input @onchange="eventArgs => CheckboxEBookClickedFunc(eventArgs.Value)"
+               class="form-check-input" type="checkbox" id="gridCheck1" disabled="@OnlyRealBooks">
+        <label class="form-check-label" for="gridCheck1">
+            Показати тільки електронні книги
+        </label>
+    </div>
+</div>
+<div class="mt-2 form-group">
+    <div class="form-check">
+        <input @onchange="eventArgs => CheckboxRealBookClickedFunc(eventArgs.Value)"
+               class="form-check-input" type="checkbox" id="gridCheck1" disabled="@OnlyEbooks">
+        <label class="form-check-label" for="gridCheck2">
+            Показати тільки реальні книги
+        </label>
+    </div>
+</div>

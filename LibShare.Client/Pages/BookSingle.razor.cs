@@ -24,8 +24,6 @@ namespace LibShare.Client.Pages
         [Inject]
         NavigationManager navigationManager { get; set; }
 
-        private Spinner LoadSpinner { get; set; } = new Spinner();
-
         public string ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()

@@ -1,0 +1,21 @@
+﻿<select @onchange="eventArgs => SelectSortClickedFunc(eventArgs.Value)" class="custom-select">
+    <option value="1">Сортувати по ... </option>
+    <option value="1">Назва</option>
+    <option value="2">Автор</option>
+    <option value="3">Видавництво</option>
+    <option value="4">Рік</option>
+    <option value="5">Мова</option>
+    <option value="6">Опис</option>
+    <option value="9">Дата створення</option>
+    <option value="10">Перегляд</option>
+</select>
+
+@code {
+
+    [Parameter]
+    public EventCallback<string> SelectOrderSortClicked { get; set; }
+    public async Task SelectSortClickedFunc(object value)
+    {
+        await SelectOrderSortClicked.InvokeAsync((string)value);
+    }
+}

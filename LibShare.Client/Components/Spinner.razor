@@ -1,4 +1,4 @@
-﻿@if (spinnerToggle)
+﻿@if (SpinnerToggle)
 {
     <div id="ftco-loader" class="show fullscreen">
         <!--<svg class="circular" width="48px" height="48px">
@@ -15,18 +15,18 @@
 
 
 @code {
-
-    private bool spinnerToggle = false;
+    [Parameter]
+    public bool SpinnerToggle { get; set; } = false;
 
     public void Show()
     {
-        spinnerToggle = true;
+        SpinnerToggle = true;
         StateHasChanged();
     }
 
     public void Hide()
     {
-        spinnerToggle = false;
+        SpinnerToggle = false;
         StateHasChanged();
     }
 }

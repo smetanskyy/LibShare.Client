@@ -16,11 +16,12 @@ namespace LibShare.Client.Pages
         ILibraryService LibraryService { get; set; }
         [Inject]
         NavigationManager navigationManager { get; set; }
-        private Spinner LoadSpinner { get; set; }
         [Parameter] public int PageSize { get; set; } = 12;
         [Parameter] public int PageNumber { get; set; } = 1;
         [Parameter] public bool OnlyEbooks { get; set; } = false;
         [Parameter] public bool OnlyRealBooks { get; set; } = false;
+        [Parameter] public string SortOrder { get; set; } = "1";
+        public List<CategoryApiModel> Categories { get; set; }
 
         public int TotalAmountPages { get; set; } = 1;
         public List<BookApiModel> BooksList { get; set; }
@@ -30,7 +31,6 @@ namespace LibShare.Client.Pages
 
         private void GetParametersFromUrl()
         {
-            // http://localhost:5050/api/library/books-filter
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("chosenCategory", out var chosenCategory))
             {
@@ -72,6 +72,14 @@ namespace LibShare.Client.Pages
             {
                 OnlyRealBooks = false;
             }
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("sortOrder", out var sortOrder))
+            {
+                SortOrder = sortOrder;
+            }
+            else
+            {
+                SortOrder = "1";
+            }
         }
 
         private string SetBaseUrlQuery(string baseUrl)
@@ -81,6 +89,8 @@ namespace LibShare.Client.Pages
             query = QueryHelpers.AddQueryString(query, "pageNumber", PageNumber.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyEbooks", OnlyEbooks.ToString());
             query = QueryHelpers.AddQueryString(query, "onlyRealBooks", OnlyRealBooks.ToString());
+            query = QueryHelpers.AddQueryString(query, "sortOrder", SortOrder);
+
             return query;
         }
 
@@ -88,6 +98,7 @@ namespace LibShare.Client.Pages
         {
             GetParametersFromUrl();
             Console.WriteLine("Hello from OnInitializedAsync Books from Server");
+            Categories = await LibraryService.GetCategories(ApiUrls.LibraryAllCategories);
             await LoadGetogory();
             await LoadBooks(PageNumber);
         }
@@ -109,6 +120,7 @@ namespace LibShare.Client.Pages
         {
             try
             {
+                await LoadGetogory();
                 PageNumber = pageYouNeed;
                 var link = SetBaseUrlQuery(ApiUrls.LibraryBooksFilter);
                 Console.WriteLine("Link filter simple " + link);
@@ -118,6 +130,11 @@ namespace LibShare.Client.Pages
 
                 PageNumber = response.CurrentPage;
                 TotalAmountPages = response.TotalPages;
+                
+                if (response.TotalCount == 0 || BooksList == null)
+                {
+                    BooksList = new List<BookApiModel>();
+                }
 
                 Console.WriteLine("Get Books from Server");
             }
@@ -134,6 +151,31 @@ namespace LibShare.Client.Pages
             PageNumber = page;
             var link = SetBaseUrlQuery("/category");
             navigationManager.NavigateTo(link);
+            StateHasChanged();
+        }
+
+        private async void CategoryOnClick(string categoryId)
+        {
+            CategoryId = categoryId;
+            await SelectedPage(1);
+        }
+
+        private async void CheckboxEBookClicked(bool checkedValue)
+        {
+            OnlyEbooks = checkedValue;
+            await SelectedPage(1);
+        }
+
+        private async void CheckboxRealBookClicked(bool checkedValue)
+        {
+            OnlyRealBooks = checkedValue;
+            await SelectedPage(1);
+        }
+
+        private async void SelectSortClicked(string value)
+        {
+            SortOrder = value;
+            await SelectedPage(1);
         }
     }
 }
