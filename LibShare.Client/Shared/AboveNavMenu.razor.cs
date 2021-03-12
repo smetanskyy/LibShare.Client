@@ -19,7 +19,7 @@ namespace LibShare.Client.Shared
         [Inject]
         public SearchState searchState { get; set; }
 
-        public SearchModel SearchModel { get; set; } = new SearchModel();
+        public SearchModel SearchModel { get; set; } = new SearchModel() { SearchField = "" };
 
         private void Search()
         {
@@ -32,7 +32,6 @@ namespace LibShare.Client.Shared
 
             searchState.SetSearchField(SearchModel.SearchField.Trim());
             SearchModel.SearchField = "";
-
             navigation.NavigateTo(query);
         }
     }
