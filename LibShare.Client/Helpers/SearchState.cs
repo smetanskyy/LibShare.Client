@@ -1,6 +1,7 @@
 ﻿using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
+using LibShare.Client.Shared;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
@@ -11,28 +12,12 @@ namespace LibShare.Client.Helpers
 {
     public class SearchState
     {
-        private readonly ILibraryService _libraryService;
-
-        public List<BookApiModel> SelectedBooks { get; private set; }
+        public string SearchField { get; set; }
 
         public event Action OnChange;
-
-        public SearchState(ILibraryService libraryService)
+        public void SetSearchField(string search)
         {
-            _libraryService = libraryService;
-        }
-
-        public async void SetBookList(string search)
-        {
-            var query = QueryHelpers.AddQueryString(ApiUrls.LibraryBooksSearch, "search", search);
-            await _libraryService.GetBooks(query);
-
-            SelectedBooks = new List<BookApiModel>() {
-            new BookApiModel() { Title = "Gool .... " },
-            new BookApiModel() { Title = "Gool .... " },
-            new BookApiModel() { Title = "Gool .... " },
-            new BookApiModel() { Title = "Gool .... " }
-            };
+            SearchField = search;
             NotifyStateChanged();
         }
 

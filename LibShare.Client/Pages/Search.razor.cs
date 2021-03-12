@@ -1,6 +1,7 @@
 ﻿using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
+using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
@@ -13,6 +14,12 @@ namespace LibShare.Client.Pages
     {
         [Inject]
         ILibraryService LibraryService { get; set; }
+
+        [Inject]
+        public SearchState searchState { get; set; }
+
+        [Inject]
+        public NavigationManager navigationManager { get; set; }
 
         [Parameter] public int PageSize { get; set; } = 12;
         [Parameter] public int PageNumber { get; set; } = 1;
@@ -95,12 +102,28 @@ namespace LibShare.Client.Pages
             return query;
         }
 
+        public void Dispose()
+        {
+            searchState.OnChange -= GetSearchFild;
+        }
+
+        private async void GetSearchFild()
+        {
+            SearchField = searchState.SearchField;
+            await SelectedPage(1);
+        }
+
         protected override async Task OnInitializedAsync()
         {
+            searchState.OnChange += GetSearchFild;
+
+            if (searchState != null)
+                Console.WriteLine("Hello from search: " +  searchState.SearchField);
+
             GetParametersFromUrl();
             Console.WriteLine("Hello from OnInitializedAsync Books from Server");
-            if (BooksList == null)
-                await LoadBooks(PageNumber);
+            await LoadBooks(PageNumber);
+
         }
 
         private async Task LoadBooks(int pageYouNeed)

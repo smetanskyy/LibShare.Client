@@ -1,6 +1,9 @@
-﻿using LibShare.Client.Helpers;
+﻿using LibShare.Client.Data.Constants;
+using LibShare.Client.Data.Interfaces;
+using LibShare.Client.Helpers;
 using LibShare.Client.Pages;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +14,31 @@ namespace LibShare.Client.Shared
     public partial class AboveNavMenu
     {
         [Inject]
-        public SearchState searchState { get; set; }
+        NavigationManager navigation { get; set; }
 
         [Inject]
-        NavigationManager navigation { get; set; }
-        private string searchField;
+        public SearchState searchState { get; set; }
+
+        public SearchModel SearchModel { get; set; } = new SearchModel();
+
         private void Search()
         {
-            booksPage.BooksList = 
-            navigation.NavigateTo("/book");
+            var query = "/search";
+
+            if (!string.IsNullOrWhiteSpace(SearchModel.SearchField))
+            {
+                query = QueryHelpers.AddQueryString(query, "search", SearchModel.SearchField);
+            }
+
+            searchState.SetSearchField(SearchModel.SearchField.Trim());
+            SearchModel.SearchField = "";
+
+            navigation.NavigateTo(query);
         }
+    }
+
+    public class SearchModel
+    {
+        public string SearchField { get; set; }
     }
 }
