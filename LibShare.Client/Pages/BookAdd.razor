@@ -4,108 +4,107 @@
 <section class="ftco-section">
     <div class="container">
         <div class="row">
-            @if (IsPhotoLoaded)
-            {
-                <div class="col-md-6 img img-3 d-flex justify-content-center align-items-center"
-                     style="background-image:url()">
-                </div>
-            }
-            <div class="@(IsPhotoLoaded == false ? "col-md-12" : "col-md-6") wrap-about pl-md-5 ftco-animate py-5">
-                <div class="heading-section">
-                    @if (ErrorMessage != null)
+            <div class="@(IsPhotoLoaded == false ? "col-md-12" : "col-md-6") pl-md-5 py-5">
+                @if (ErrorMessage != null)
+                {
+                    <h3 class="mb-4">Помилка сервера: <span style="color: indianred">@ErrorMessage</span> </h3>
+                }
+
+                <EditForm method="POST" id="addForm" name="addForm" class="contactForm" Model="@BookModel" OnSubmit="OnSubmitHandle">
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <InputText class="form-control" @bind-Value="BookModel.Title" placeholder="Назва: " />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <InputText class="form-control" @bind-Value="BookModel.Author" placeholder="Автор: " />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12 form-group">
+                            <label for="exampleFormControlTextarea1">Опис книги:</label>
+                            <InputTextArea class="form-control" @bind-Value="BookModel.Description" rows="12" />
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Категорія: </label>
+                        </div>
+                        <select @bind="BookModel.CategoryId" class="custom-select" id="inputGroupSelect01" required>
+                            <option selected>Choose...</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <InputText class="form-control" @bind-Value="BookModel.Year" placeholder="Рік випуску" />
+                        </div>
+
+                        <div class="col">
+                            <InputText class="form-control" @bind-Value="BookModel.Language" placeholder="Мова книги" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-7">
+                            <InputText class="form-control" @bind-Value="BookModel.Publisher" placeholder="Видавництво: " />
+                        </div>
+
+                        <div class="mt-1 col-md-5">
+                            <div class="form-check">
+                                <input style="margin-top: 10px" type="checkbox" class="form-check-input" @bind="IsEBook" />
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Чи книга електронна?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mt-4 mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Обрати обкладинку</span>
+                        </div>
+                        <div class="custom-file">
+                            <input class="custom-file-input" id="inputGroupFile01"
+                                   type="file" @ref="InputElementImage" @onchange="ImageFileSelected" accept=".jpg,.jpeg,.png" />
+                            <label class="custom-file-label" for="inputGroupFile01">Вибрати файл</label>
+                        </div>
+
+                    </div>
+
+                    @if (IsEBook)
                     {
-                        <h3 class="mb-4">Помилка сервера: <span style="color: indianred">@ErrorMessage</span> </h3>
-                    }
-
-                    <EditForm method="POST" id="addForm" name="addForm" class="contactForm" Model="@BookModel" OnSubmit="OnSubmitHandle">
-
-                        <div class="form-row">
-                            <div class="col-md-12">
-                                <InputText class="form-control" @bind-Value="BookModel.Title" placeholder="Назва: " />
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-12">
-                                <InputText class="form-control" @bind-Value="BookModel.Author" placeholder="Автор: " />
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-12 form-group">
-                                <label for="exampleFormControlTextarea1">Опис книги:</label>
-                                <InputTextArea class="form-control" @bind-Value="BookModel.Description" rows="12" />
-                            </div>
-                        </div>
-
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Категорія: </label>
-                            </div>
-                            <select @bind="BookModel.CategoryId" class="custom-select" id="inputGroupSelect01" required>
-                                <option selected>Choose...</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col">
-                                <InputText class="form-control" @bind-Value="BookModel.Year" placeholder="Рік випуску" />
-                            </div>
-
-                            <div class="col">
-                                <InputText class="form-control" @bind-Value="BookModel.Language" placeholder="Мова книги" />
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-7">
-                                <InputText class="form-control" @bind-Value="BookModel.Publisher" placeholder="Видавництво: " />
-                            </div>
-
-                            <div class="mt-1 col-md-5">
-                                <div class="form-check">
-                                    <input style="margin-top: 10px" type="checkbox" class="form-check-input" @bind="IsEBook" />
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Чи книга електронна?
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="input-group mt-4 mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Обрати обкладинку</span>
+                                <span class="input-group-text">Завантажити книгу</span>
                             </div>
                             <div class="custom-file">
-                                <input class="custom-file-input" id="inputGroupFile01"
-                                       type="file" @ref="InputElementImage" @onchange="ImageFileSelected" accept=".jpg,.jpeg,.png" />
-                                <label class="custom-file-label" for="inputGroupFile01">Вибрати файл</label>
+                                <InputFile type="file" class="custom-file-input" id="inputGroupFile02" required />
+                                <label class="custom-file-label" for="inputGroupFile02">Вибрати файл</label>
                             </div>
-
                         </div>
+                    }
 
-                        @if (IsEBook)
-                        {
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Завантажити книгу</span>
-                                </div>
-                                <div class="custom-file">
-                                    <InputFile type="file" class="custom-file-input" id="inputGroupFile02" required />
-                                    <label class="custom-file-label" for="inputGroupFile02">Вибрати файл</label>
-                                </div>
-                            </div>
-                        }
-
-                        <div class="row">
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Додати книгу</button>
-                        </div>
-                    </EditForm>
-                </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Додати книгу</button>
+                    </div>
+                </EditForm>
             </div>
+
+            @if (IsPhotoLoaded)
+            {
+                <div class="col-md-6 justify-content-center align-items-center ml-2">
+                    <img class="rounded" style="object-fit: cover; width: 100%; height: auto;" src="@ImageUrl" alt="Alternate Text" />
+                </div>
+            }
         </div>
     </div>
 </section>
