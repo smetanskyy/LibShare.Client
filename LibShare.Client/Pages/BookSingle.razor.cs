@@ -1,6 +1,4 @@
-﻿using LibShare.Client.Components;
-using LibShare.Client.Data.ApiModels;
-using LibShare.Client.Data.Constants;
+﻿using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
@@ -36,13 +34,19 @@ namespace LibShare.Client.Pages
                 {
                     bookIdFromUrl = bookId;
                 }
+
                 Console.WriteLine("bookIdFromUrl " + bookIdFromUrl);
 
-                var urlServer = QueryHelpers.AddQueryString(ApiUrls.LibraryBook, "bookId", bookIdFromUrl);
-                BookItem = await LibraryService.GetBookByIdAsync(urlServer);
+                BookItem = await LibraryService.GetBookByIdAsync(bookIdFromUrl);
+
+                if (BookItem == null)
+                {
+                    BookItem = new BookApiModel();
+                }
             }
             catch (Exception ex)
             {
+                BookItem = new BookApiModel();
                 ErrorMessage = ex.Message;
             }
         }

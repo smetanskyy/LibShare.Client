@@ -1,4 +1,5 @@
 ﻿using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
@@ -46,6 +47,11 @@ namespace LibShare.Client.Components
         private void ReferToBookClick()
         {
             navigationManager.NavigateTo(ReferToBook());
+        }
+
+        private string ReferToDoawloadBook()
+        {
+            return QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", BookItem.Id);
         }
     }
 }

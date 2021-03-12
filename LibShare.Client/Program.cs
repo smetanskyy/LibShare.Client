@@ -29,6 +29,7 @@ namespace LibShare.Client
 
             #region BlazorFileReader
             builder.Services.AddFileReaderService(options => options.InitializeOnFirstCall = true);
+            //builder.Services.AddFileReaderService(o => o.UseWasmSharedBuffer = true);
             #endregion
 
             builder.Services.AddSingleton(new SearchState());

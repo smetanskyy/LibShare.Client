@@ -1,0 +1,13 @@
+﻿@inject IFileReaderService FileReaderService
+@inject ILibraryService libraryService
+
+<div>
+    <label>@Label</label>
+    <div>
+        <input type="file" @ref="InputElement" @onchange="FileSelected" accept=".pdf,.doc,.djvu"  required/>
+    </div>
+</div>
+
+@code {
+    
+}

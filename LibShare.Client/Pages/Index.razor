@@ -2,10 +2,15 @@
 @page "/index"
 <Spinner @ref="LoadSpinner" />
 @inject NavigationManager navigationManager
+@inject ILibraryService libraryService
+
+
+<InputFileSelect></InputFileSelect>
 
 @code {
     public Spinner LoadSpinner { get; set; }
     protected override void OnInitialized()
     {
+        navigationManager.NavigateTo("/book-add");
     }
 }

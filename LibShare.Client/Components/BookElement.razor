@@ -1,5 +1,5 @@
 ﻿<div class="col-md-6 col-lg-4 d-flex">
-    <div style="cursor: pointer;" @onclick="@ReferToBookClick" class="book-wrap d-lg-flex">
+    <div class="book-wrap d-lg-flex">
         <div class="img d-flex justify-content-end" style="background-image:url(@SetImageUrl())">
             <div class="in-text">
                 @if (Book.IsEbook == false)
@@ -10,7 +10,7 @@
                 }
                 @if (Book.IsEbook == true)
                 {
-                    <a href="#" class="icon d-flex align-items-center justify-content-center" title="@download">
+                    <a href="@ReferToDoawloadBook()" class="icon d-flex align-items-center justify-content-center" title="@download">
                         <i class="fa fa-download" aria-hidden="true"></i>
                     </a>
                 }
@@ -19,7 +19,7 @@
                 </a>
             </div>
         </div>
-        <div class="text p-4 order-md-first">
+        <div style="cursor: pointer;" @onclick="@ReferToBookClick" class="text p-4 order-md-first">
             <p><a href="@ReferToBook()" style="font-size: 14px;" title="@Book.Title">@SetFieldShorter(Book.Title)</a></p>
             <span class="position price" title="@Book.Author">@SetFieldShorter(Book.Author)</span>
         </div>

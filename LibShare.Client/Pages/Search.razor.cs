@@ -135,7 +135,7 @@ namespace LibShare.Client.Pages
 
                 var response = await LibraryService.GetBooks(link);
                 BooksList = response.List;
-                Categories = await LibraryService.GetCategories(ApiUrls.LibraryAllCategories);
+                Categories = await LibraryService.GetCategories();
                 PageNumber = response.CurrentPage;
                 TotalAmountPages = response.TotalPages;
 

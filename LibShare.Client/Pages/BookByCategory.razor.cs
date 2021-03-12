@@ -98,7 +98,7 @@ namespace LibShare.Client.Pages
         {
             GetParametersFromUrl();
             Console.WriteLine("Hello from OnInitializedAsync Books from Server");
-            Categories = await LibraryService.GetCategories(ApiUrls.LibraryAllCategories);
+            Categories = await LibraryService.GetCategories();
             await LoadGetogory();
             await LoadBooks(PageNumber);
         }
@@ -107,8 +107,7 @@ namespace LibShare.Client.Pages
         {
             try
             {
-                var urlServer = QueryHelpers.AddQueryString(ApiUrls.LibraryCategory, "categoryId", CategoryId);
-                Category = await LibraryService.GetCategory(urlServer);
+                Category = await LibraryService.GetCategory(CategoryId);
             }
             catch (Exception ex)
             {

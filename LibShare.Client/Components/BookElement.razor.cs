@@ -1,7 +1,10 @@
 ﻿using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.Net;
+using System.Net.Http;
 
 namespace LibShare.Client.Components
 {
@@ -10,6 +13,9 @@ namespace LibShare.Client.Components
         private static readonly Random _random = new Random();
         [Inject]
         NavigationManager navigationManager { get; set; }
+
+        [Inject]
+        HttpClient httpClient { get; set; }
 
         [Parameter]
         public BookApiModel Book { get; set; }
@@ -46,6 +52,11 @@ namespace LibShare.Client.Components
         private void ReferToBookClick()
         {
             navigationManager.NavigateTo(ReferToBook());
+        }
+
+        private string ReferToDoawloadBook()
+        {
+            return QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", Book.Id);
         }
     }
 }
