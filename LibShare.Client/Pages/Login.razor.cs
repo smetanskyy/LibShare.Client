@@ -49,7 +49,7 @@ namespace LibShare.Client.Pages
             {
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
-
+                StateHasChanged();
             }
         }
 

@@ -15,8 +15,6 @@ namespace LibShare.Client.Pages
     {
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-        [Inject]
-        HttpClient Http { get; set; }
 
         [Inject]
         IAccountRepository accountRepository { get; set; }
@@ -54,6 +52,7 @@ namespace LibShare.Client.Pages
             {
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
+                StateHasChanged();
             }
         }
 
