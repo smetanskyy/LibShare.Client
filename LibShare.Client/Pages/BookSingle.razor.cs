@@ -1,4 +1,5 @@
 ﻿using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
@@ -9,12 +10,11 @@ namespace LibShare.Client.Pages
 {
     public partial class BookSingle
     {
-        private static readonly Random _random = new Random();
-
         private string download = "Завантажити книгу";
         private string callToOwner = "Зв'язатися з власником книги";
 
-        public BookApiModel BookItem { get; set; } = new BookApiModel();
+        public BookApiModel BookItem { get; set; }
+        public string ReferDoawloadBook { get; set; }
 
         [Inject]
         ILibraryService LibraryService { get; set; }
@@ -34,29 +34,19 @@ namespace LibShare.Client.Pages
                 {
                     bookIdFromUrl = bookId;
                 }
+                else
+                {
+                    bookIdFromUrl = "book1";
+                }
 
                 Console.WriteLine("bookIdFromUrl " + bookIdFromUrl);
-
                 BookItem = await LibraryService.GetBookByIdAsync(bookIdFromUrl);
-
-                if (BookItem == null)
-                {
-                    BookItem = new BookApiModel();
-                }
+                ReferDoawloadBook = QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", BookItem.Id);
             }
             catch (Exception ex)
             {
-                BookItem = new BookApiModel();
                 ErrorMessage = ex.Message;
             }
-        }
-        private string SetImageUrl()
-        {
-            return BookItem.Image ?? SetRandomImage();
-        }
-        private string SetRandomImage()
-        {
-            return $"/images/book-{_random.Next(1, 6)}.jpg";
         }
     }
 }

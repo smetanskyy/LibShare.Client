@@ -1,35 +1,42 @@
 ﻿@page "/book"
 
-<section class="ftco-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 img img-3 d-flex justify-content-center align-items-center"
-                 style="background-image:url(@SetImageUrl())">
-            </div>
-            <div class="col-md-6 wrap-about pl-md-5 py-5">
-                <div class="heading-section">
-                    @if (ErrorMessage != null)
-                    {
-                        <h3 class="mb-4">Помилка сервера: <span style="color: indianred">@ErrorMessage</span> </h3>
-                    }
-                    <span class="subheading">@BookItem.Author</span>
-                    <h3 class="mb-4">@BookItem.Title</h3>
-                    <p>@BookItem.Description</p>
-                    <p>Видавництво: <span>@BookItem.Publisher</span></p>
-                    <p>Мова книги: <span>@BookItem.Language</span></p>
-                    <p>Рік випуску: <span>@BookItem.Year</span></p>
-                    <p>Дата створення запису: <span>@BookItem.DateCreate.Day / @BookItem.DateCreate.Month / @BookItem.DateCreate.Year</span></p>
+@if (BookItem != null)
+{
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 img img-3 d-flex justify-content-center align-items-center"
+                     style="background-image:url(@BookItem.Image)">
+                </div>
+                <div class="col-md-6 wrap-about pl-md-5 py-5">
+                    <div class="heading-section">
+                        <span class="subheading">@BookItem.Author</span>
+                        <h3 class="mb-4">@BookItem.Title</h3>
+                        <p>@BookItem.Description</p>
+                        <p>Видавництво: <span>@BookItem.Publisher</span></p>
+                        <p>Мова книги: <span>@BookItem.Language</span></p>
+                        <p>Рік випуску: <span>@BookItem.Year</span></p>
+                        <p>Дата створення запису: <span>@BookItem.DateCreate.Day / @BookItem.DateCreate.Month / @BookItem.DateCreate.Year</span></p>
 
-                    @if (BookItem.IsEbook == false)
-                    {
-                        <a href="#" class="btn btn-primary">@callToOwner</a>
-                    }
-                    @if (BookItem.IsEbook == true)
-                    {
-                        <a href="#" class="btn btn-primary">@download</a>
-                    }
+                        @if (BookItem.IsEbook == false)
+                        {
+                            <a href="/call-to-owner" class="btn btn-primary">@callToOwner</a>
+                        }
+                        @if (BookItem.IsEbook == true)
+                        {
+                            <a href="@ReferDoawloadBook" class="btn btn-primary">@download</a>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+}
+else if (ErrorMessage != null)
+{
+    <h3 class="mb-4">Помилка сервера: <span style="color: indianred">@ErrorMessage</span> </h3>
+}
+else
+{
+    <Spinner SpinnerToggle="@true" />
+}
