@@ -15,11 +15,11 @@
                             <text class="text-danger">@ErrorMessage</text>
 
                             <div class="row">
-                                <div class="col-md-12 mb-4">
-                                    <div>
-                                        <img src="/images/person_2.jpg" class="rounded mx-auto d-block h-25" alt="profile image">
+                                <div class="col-md-12 mb-5">
+                                    <div class="centerbox">
+                                        <img src="/images/person_2.jpg" class="rounded-circle mx-auto d-block image" alt="profile image">
                                         <div class="middle">
-                                            <div class="text">John Doe</div>
+                                            <button class="btn btn-primary">Оновити фото</button>
                                         </div>
                                     </div>
                                 </div>
@@ -28,7 +28,7 @@
                                     <div class="form-group">
                                         <label class="label" for="name">Ім'я: </label>
                                         <InputText class="form-control"
-                                                   name="name" id="name" placeholder="@Model.Name"
+                                                   name="name" id="name" placeholder="Ім'я"
                                                    @bind-Value="Model.Name" />
                                         <ValidationMessage For="@(() => Model.Name)" />
                                     </div>
@@ -38,7 +38,7 @@
                                     <div class="form-group">
                                         <label class="label" for="name">Прізвище: </label>
                                         <InputText class="form-control"
-                                                   name="surname" id="surname" placeholder="@Model.Surname"
+                                                   name="surname" id="surname" placeholder="Прізвище"
                                                    @bind-Value="Model.Surname" />
                                         <ValidationMessage For="@(() => Model.Surname)" />
                                     </div>
@@ -60,7 +60,7 @@
                                     <div class="form-group">
                                         <label class="label" for="">Телефон: </label>
                                         <input type="tel" class="form-control"
-                                               name="phone" id="phone" placeholder="@Model.Phone"
+                                               name="phone" id="phone" placeholder="Телефон"
                                                @bind="@Model.Phone" />
                                         <ValidationMessage For="@(() => Model.Phone)" />
                                     </div>
@@ -74,8 +74,8 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
+                                <div class="col-md-12 mt-3">
+                                    <div class="form-group centerbox">
                                         <button type="submit" class="btn btn-primary"> Оновити профіль </button>
                                         <div class="submitting"></div>
                                     </div>
@@ -88,32 +88,3 @@
         </div>
     </div>
 </section>
-
-
-
-
-<InputImage Label="Фото користувача" OnSelectedImage="PhotoSelected" ImageUrl="@PhotoUrl" />
-
-@code {
-    [Parameter]
-    public UserApiModel UserModel { get; set; } = new UserApiModel();
-
-    public Spinner LoadSpinner { get; set; }
-    public string PhotoUrl { get; set; }
-
-    protected override void OnInitialized()
-    {
-        if (string.IsNullOrWhiteSpace(UserModel.Photo))
-        {
-            PhotoUrl = UserModel.Photo;
-            UserModel.Photo = null;
-        }
-    }
-
-    private void PhotoSelected(string imageBase64)
-    {
-        UserModel.Photo = imageBase64;
-        PhotoUrl = null;
-        Console.WriteLine("Hello from PhotoSelected");
-    }
-}

@@ -26,6 +26,8 @@ namespace LibShare.Client.Pages
 
         public string ErrorMessage { get; set; }
 
+        Spinner LoadSpinner { get; set; }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
