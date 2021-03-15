@@ -1,5 +1,6 @@
 ﻿using LibShare.Client.Components;
 using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
@@ -9,23 +10,25 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class Login
+    public partial class ChangePassword
     {
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
         [Inject]
+        IHttpService _httpService { get; set; }
+
         IAccountService accountService { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
+        [Parameter]
+        public ChangePasswordApiModel Model { get; set; } = new ChangePasswordApiModel();
+
         public string ErrorMessage { get; set; }
 
-        public LoginApiModel Model { get; set; } = new LoginApiModel();
-
         private Spinner LoadSpinner { get; set; }
-
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -41,7 +44,7 @@ namespace LibShare.Client.Pages
             try
             {
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
-                var response = await accountService.LoginUserAsync(Model);
+                var response = _httpService.Post<ChangePasswordApiModel, TokenApiModel>(ApiUrls.ChangePasswordUrl, Model);
                 LoadSpinner.Hide();
                 NavigationManager.NavigateTo("/index");
             }
@@ -53,7 +56,7 @@ namespace LibShare.Client.Pages
             }
         }
 
-        void ClearErrorMessage()
+        public void ClearErrorMessage()
         {
             ErrorMessage = null;
         }

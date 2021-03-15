@@ -1,17 +1,15 @@
 ﻿using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
-using LibShare.Client.Data.Interfaces.IRepositories;
 using System;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace LibShare.Client.Data.Repositories
+namespace LibShare.Client.Data.Services
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountService : IAccountService
     {
         private readonly IHttpService _httpService;
-        public AccountRepository(IHttpService httpService)
+        public AccountService(IHttpService httpService)
         {
             _httpService = httpService;
         }

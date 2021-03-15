@@ -1,12 +1,10 @@
 ﻿using LibShare.Client.Components;
 using LibShare.Client.Data.ApiModels;
-using LibShare.Client.Data.Interfaces.IRepositories;
+using LibShare.Client.Data.Interfaces;
 using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
@@ -17,7 +15,7 @@ namespace LibShare.Client.Pages
         IJSRuntime JSRuntime { get; set; }
 
         [Inject]
-        IAccountRepository accountRepository { get; set; }
+        IAccountService accountService { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
@@ -44,7 +42,7 @@ namespace LibShare.Client.Pages
             {
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
                 Model.UserName = Model.Email;
-                var response = await accountRepository.RegisterUserAsync(Model);
+                var response = await accountService.RegisterUserAsync(Model);
                 LoadSpinner.Hide();
                 NavigationManager.NavigateTo("/index");
             }

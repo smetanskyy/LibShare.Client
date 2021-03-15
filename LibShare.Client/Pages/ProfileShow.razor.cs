@@ -1,5 +1,6 @@
 ﻿using LibShare.Client.Components;
 using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
@@ -9,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class Login
+    public partial class ProfileShow
     {
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
         [Inject]
-        IAccountService accountService { get; set; }
+        IHttpService HttpService { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
+        [Parameter]
+        public UserApiModel Model { get; set; } = new UserApiModel();
+
+        Spinner LoadSpinner { get; set; }
+
         public string ErrorMessage { get; set; }
-
-        public LoginApiModel Model { get; set; } = new LoginApiModel();
-
-        private Spinner LoadSpinner { get; set; }
-
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -37,11 +38,10 @@ namespace LibShare.Client.Pages
 
         private async void OnSubmitHandle()
         {
-            LoadSpinner.Show();
             try
             {
-                Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
-                var response = await accountService.LoginUserAsync(Model);
+                Model.UserName = Model.Email;
+                var response = await HttpService.Post<UserApiModel, UserApiModel>(ApiUrls.ClientEditProfile, Model);
                 LoadSpinner.Hide();
                 NavigationManager.NavigateTo("/index");
             }
@@ -53,7 +53,7 @@ namespace LibShare.Client.Pages
             }
         }
 
-        void ClearErrorMessage()
+        public void ClearErrorMessage()
         {
             ErrorMessage = null;
         }

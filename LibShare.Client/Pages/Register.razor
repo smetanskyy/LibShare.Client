@@ -15,7 +15,7 @@
                             <text class="text-danger">@ErrorMessage</text>
 
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="label" for="email">Email: </label>
                                         <InputText type="email" class="form-control"
@@ -24,7 +24,7 @@
                                         <ValidationMessage For="@(() => Model.Email)" />
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="label" for="password">Пароль: </label>
                                         <InputText type="password" class="form-control"
@@ -33,7 +33,7 @@
                                         <ValidationMessage For="@(() => Model.Password)" />
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="label" for="confirmPassword">Підтвердити пароль: </label>
                                         <InputText type="password" class="form-control"
@@ -42,7 +42,7 @@
                                         <ValidationMessage For="@(() => Model.ConfirmPassword)" />
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary"> Зареєструватися </button>
                                         <div class="submitting"></div>

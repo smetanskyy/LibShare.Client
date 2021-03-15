@@ -1,4 +1,4 @@
-﻿@page "/profile-edit"
+﻿@page "/profile"
 @implements IDisposable
 <Spinner @ref="LoadSpinner" />
 <section class="ftco-section bg-light">
@@ -15,16 +15,15 @@
                             <text class="text-danger">@ErrorMessage</text>
 
                             <div class="row">
-                                <div class="col-md-12 mb-4">
-                                    <div>
-                                        <img src="/images/person_2.jpg" class="rounded mx-auto d-block h-25" alt="profile image">
-                                        <div class="middle">
-                                            <div class="text">John Doe</div>
-                                        </div>
-                                    </div>
+
+                                <div>
+                                    <img src="https://img.icons8.com/bubbles/100/000000/administrator-male.png"
+                                         class="img-lg rounded-circle mb-4" alt="profile image">
+                                    <h4>Sam Disanjo</h4>
+                                    <p class="text-muted mb-0">Social Activist</p>
                                 </div>
 
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="label" for="name">Ім'я: </label>
                                         <InputText class="form-control"
@@ -34,7 +33,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="label" for="name">Прізвище: </label>
                                         <InputText class="form-control"
@@ -45,7 +44,7 @@
                                 </div>
 
 
-                                <div class="col-md-12 mb-4">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="label" for="email">Email: </label>
                                         <InputText type="email" class="form-control"
@@ -56,7 +55,7 @@
                                 </div>
 
 
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="label" for="">Телефон: </label>
                                         <input type="tel" class="form-control"
@@ -66,7 +65,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="label" for="">Дата народження: </label>
                                         <InputDate class="form-control" @bind-Value="Model.DateOfBirth" name="DateOfBirth" id="DateOfBirth" />
@@ -76,10 +75,18 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary"> Оновити профіль </button>
+                                        <button type="submit" class="btn btn-primary"> Оновити </button>
                                         <div class="submitting"></div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-secondary">  </button>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </EditForm>
                     </div>
@@ -88,32 +95,3 @@
         </div>
     </div>
 </section>
-
-
-
-
-<InputImage Label="Фото користувача" OnSelectedImage="PhotoSelected" ImageUrl="@PhotoUrl" />
-
-@code {
-    [Parameter]
-    public UserApiModel UserModel { get; set; } = new UserApiModel();
-
-    public Spinner LoadSpinner { get; set; }
-    public string PhotoUrl { get; set; }
-
-    protected override void OnInitialized()
-    {
-        if (string.IsNullOrWhiteSpace(UserModel.Photo))
-        {
-            PhotoUrl = UserModel.Photo;
-            UserModel.Photo = null;
-        }
-    }
-
-    private void PhotoSelected(string imageBase64)
-    {
-        UserModel.Photo = imageBase64;
-        PhotoUrl = null;
-        Console.WriteLine("Hello from PhotoSelected");
-    }
-}

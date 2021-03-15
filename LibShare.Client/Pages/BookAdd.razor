@@ -1,7 +1,7 @@
 ﻿@page "/book-add"
 @inject IFileReaderService FileReaderService
 
-<section class="ftco-section">
+<section class="ftco-section bg-light">
     <div class="container">
         <div class="row">
             <div class="@(IsPhotoLoaded == false ? "col-md-12" : "col-md-6") pl-md-5 py-5">
@@ -96,6 +96,7 @@
                     <div class="row">
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Додати книгу</button>
                     </div>
+                    <InputFileSelect />
                 </EditForm>
             </div>
 

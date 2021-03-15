@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace LibShare.Client.Data.Interfaces.IRepositories
+namespace LibShare.Client.Data.Interfaces
 {
-    public interface ICrudRepository<TypeModel, TypeId> where TypeModel : class
+    public interface ICrudService<TypeModel, TypeId> where TypeModel : class
     {
         Task<TypeModel> CreateAsync(TypeModel model);
         Task<TypeModel> GetByIdAsync(TypeId id);
