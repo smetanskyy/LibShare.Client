@@ -1,5 +1,4 @@
 ﻿@page "/profile-edit"
-@implements IDisposable
 <Spinner @ref="LoadSpinner" />
 <section class="ftco-section bg-light">
     <div class="container">
@@ -7,7 +6,7 @@
             <div class="wrapper px-md-4">
                 <div class="row no-gutters">
                     <div class="contact-wrap w-100 p-md-5 p-4">
-                        <h3 class="mb-4">Зміна профілю</h3>
+                        <h3 class="mb-4">Оновлення профілю</h3>
                         <EditForm @oninput="@ClearErrorMessage" method="POST" class="contactForm"
                                   Model="@Model" OnValidSubmit="OnSubmitHandle">
                             <FluentValidationValidator />
@@ -15,15 +14,6 @@
                             <text class="text-danger">@ErrorMessage</text>
 
                             <div class="row">
-                                <div class="col-md-12 mb-5">
-                                    <div class="centerbox">
-                                        <img src="/images/person_2.jpg" class="rounded-circle mx-auto d-block image" alt="profile image">
-                                        <div class="middle">
-                                            <button class="btn btn-primary">Оновити фото</button>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="col-md-6 mb-4">
                                     <div class="form-group">
                                         <label class="label" for="name">Ім'я: </label>
@@ -76,7 +66,7 @@
 
                                 <div class="col-md-12 mt-3">
                                     <div class="form-group centerbox">
-                                        <button type="submit" class="btn btn-primary"> Оновити профіль </button>
+                                        <button type="submit" class="btn btn-primary mx-auto"> Підтвердити зміни </button>
                                         <div class="submitting"></div>
                                     </div>
                                 </div>

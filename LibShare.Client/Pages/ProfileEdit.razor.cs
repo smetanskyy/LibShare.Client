@@ -2,19 +2,13 @@
 using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
-using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System;
-using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
     public partial class ProfileEdit
     {
-        [Inject]
-        IJSRuntime JSRuntime { get; set; }
-
         [Inject]
         IHttpService HttpService { get; set; }
 
@@ -28,14 +22,6 @@ namespace LibShare.Client.Pages
 
         Spinner LoadSpinner { get; set; }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                await JSRuntime.ShowRecaptchaIcon();
-            }
-        }
-
         private async void OnSubmitHandle()
         {
             try
@@ -43,7 +29,7 @@ namespace LibShare.Client.Pages
                 Model.UserName = Model.Email;
                 var response = await HttpService.Post<UserApiModel, UserApiModel>(ApiUrls.ClientEditProfile, Model);
                 LoadSpinner.Hide();
-                NavigationManager.NavigateTo("/index");
+                NavigationManager.NavigateTo("/profile");
             }
             catch (Exception ex)
             {
@@ -56,11 +42,6 @@ namespace LibShare.Client.Pages
         public void ClearErrorMessage()
         {
             ErrorMessage = null;
-        }
-
-        public void Dispose()
-        {
-            JSRuntime.HideRecaptchaIcon();
         }
     }
 }

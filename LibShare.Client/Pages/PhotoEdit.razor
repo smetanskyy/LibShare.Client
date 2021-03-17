@@ -1,0 +1,32 @@
+﻿@page "/photo-edit"
+@inject IFileReaderService FileReaderService
+
+<section class="ftco-section bg-light m-0 p-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                @if (ImageBase64 != null)
+                {
+                    <img src="data:image/jpeg;base64, @ImageBase64" style="object-fit: cover; max-width: 90%; height: 90%;" />
+                }
+                @if (ImageUrl != null)
+                {
+                    <img class="rounded" style="object-fit: cover; max-width: 90%; height: 90%;" src="@ImageUrl" alt="Change photo" 
+                         onError="this.src='/images/person_2.jpg'"/>
+                }
+            </div>
+
+            <div class="input-group mt-4 mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Обрати фото</span>
+                </div>
+                <div class="custom-file">
+                    <input class="custom-file-input" id="inputGroupFile01"
+                           type="file" @ref="InputElementImage" @onchange="ImageFileSelected" accept=".jpg,.jpeg,.png" />
+                    <label class="custom-file-label" for="inputGroupFile01">Вибрати файл</label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

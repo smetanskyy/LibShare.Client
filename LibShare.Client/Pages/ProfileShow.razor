@@ -1,94 +1,84 @@
 ﻿@page "/profile"
-@implements IDisposable
-<Spinner @ref="LoadSpinner" />
+
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row justify-content-center">
             <div class="wrapper px-md-4">
                 <div class="row no-gutters">
                     <div class="contact-wrap w-100 p-md-5 p-4">
-                        <h3 class="mb-4">Зміна профілю</h3>
-                        <EditForm @oninput="@ClearErrorMessage" method="POST" class="contactForm"
-                                  Model="@Model" OnValidSubmit="OnSubmitHandle">
-                            <FluentValidationValidator />
+                        <h3 class="mb-4">Особистий кабінет</h3>
+                        <text class="text-danger">@ErrorMessage</text>
 
-                            <text class="text-danger">@ErrorMessage</text>
-
-                            <div class="row">
-
-                                <div>
-                                    <img src="https://img.icons8.com/bubbles/100/000000/administrator-male.png"
-                                         class="img-lg rounded-circle mb-4" alt="profile image">
-                                    <h4>Sam Disanjo</h4>
-                                    <p class="text-muted mb-0">Social Activist</p>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="label" for="name">Ім'я: </label>
-                                        <InputText class="form-control"
-                                                   name="name" id="name" placeholder="@Model.Name"
-                                                   @bind-Value="Model.Name" />
-                                        <ValidationMessage For="@(() => Model.Name)" />
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <div class="imagebox">
+                                    <img src="/images/person_2.jpg" class="rounded-circle mx-auto d-block image" alt="profile image">
+                                    <div class="middle">
+                                        <button @onclick="GoToChangePhoto" class="btn btn-primary">Оновити фото</button>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="label" for="name">Прізвище: </label>
-                                        <InputText class="form-control"
-                                                   name="surname" id="surname" placeholder="@Model.Surname"
-                                                   @bind-Value="Model.Surname" />
-                                        <ValidationMessage For="@(() => Model.Surname)" />
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="label" for="email">Email: </label>
-                                        <InputText type="email" class="form-control"
-                                                   name="email" id="email" placeholder="Email"
-                                                   @bind-Value="Model.Email" />
-                                        <ValidationMessage For="@(() => Model.Email)" />
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="label" for="">Телефон: </label>
-                                        <input type="tel" class="form-control"
-                                               name="phone" id="phone" placeholder="@Model.Phone"
-                                               @bind="@Model.Phone" />
-                                        <ValidationMessage For="@(() => Model.Phone)" />
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="label" for="">Дата народження: </label>
-                                        <InputDate class="form-control" @bind-Value="Model.DateOfBirth" name="DateOfBirth" id="DateOfBirth" />
-                                        <ValidationMessage For="@(() => Model.DateOfBirth)" />
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary"> Оновити </button>
-                                        <div class="submitting"></div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-secondary">  </button>
-                                    </div>
-                                </div>
-
-
                             </div>
-                        </EditForm>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label class="label" for="name">Ім'я: </label>
+                                    <input readonly class="form-control" type="text" placeholder="Ім'я" 
+                                           value="@Model.Name" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label class="label" for="name">Прізвище: </label>
+                                    <input readonly class="form-control" type="text" placeholder="Прізвище" 
+                                           value="@Model.Surname" />
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 mb-4">
+                                <div class="form-group">
+                                    <label class="label" for="email">Email: </label>
+                                    <input readonly type="text" class="form-control" placeholder="Email" 
+                                           value="@Model.Email" />
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label class="label" for="">Телефон: </label>
+                                    <input readonly type="text" class="form-control" placeholder="Телефон"
+                                           value="@Model.Phone" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label class="label" for="">Дата народження: </label>
+                                    <input type="date" readonly class="form-control" value="@Model.DateOfBirth" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mt-3">
+                                <div class="form-group">
+                                    <button type="button" @onclick="GoToChangeProfile" class="btn btn-primary"> Оновити профіль </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mt-3">
+                                <div class="form-group">
+                                    <button type="button" @onclick="GoToChangePhoto" class="btn btn-success"> Поміняти фото </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mt-3">
+                                <div class="form-group">
+                                    <button type="button" @onclick="GoToChangePassword" class="btn btn-secondary"> Змінити пароль </button>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
