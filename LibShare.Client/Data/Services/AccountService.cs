@@ -24,9 +24,9 @@ namespace LibShare.Client.Data.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserApiModel> GetByIdAsync(string id)
+        public async Task<UserApiModel> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _httpService.Get<UserApiModel>(ApiUrls.GetUserById + id);
         }
 
         public async Task<TokenApiModel> LoginUserAsync(LoginApiModel model)
@@ -34,14 +34,29 @@ namespace LibShare.Client.Data.Services
             return await _httpService.Post<LoginApiModel, TokenApiModel>(ApiUrls.LoginUrl, model);
         }
 
+        public async Task LogoutAsync()
+        {
+            await _httpService.Get<MessageApiModel>(ApiUrls.Logout);
+        }
+
+        public async Task<TokenApiModel> RefreshTokenAsync(TokenApiModel model)
+        {
+            return await _httpService.Post<TokenApiModel, TokenApiModel>(ApiUrls.RefreshTokenUrl, model);
+        }
+
         public async Task<TokenApiModel> RegisterUserAsync(RegisterApiModel model)
         {
             return await _httpService.Post<RegisterApiModel, TokenApiModel>(ApiUrls.RegisterUrl, model);
         }
 
-        public Task<UserApiModel> UpdateAsync(UserApiModel item)
+        public async Task<UserApiModel> UpdateAsync(UserApiModel model)
         {
-            throw new NotImplementedException();
+            return await _httpService.Post<UserApiModel, UserApiModel>(ApiUrls.ClientEditProfile, model);
+        }
+
+        public async Task<MessageApiModel> DeleteMe(UserApiModel model)
+        {
+            return await _httpService.Put<UserApiModel, MessageApiModel>(ApiUrls.DeleteMeUrl, model);
         }
     }
 }

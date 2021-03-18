@@ -4,6 +4,7 @@ using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
@@ -21,6 +22,18 @@ namespace LibShare.Client.Pages
         public string ErrorMessage { get; set; }
 
         Spinner LoadSpinner { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                Model = await HttpService.Get<UserApiModel>(ApiUrls.ClientInfo);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+        }
 
         private async void OnSubmitHandle()
         {

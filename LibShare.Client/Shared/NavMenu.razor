@@ -1,4 +1,5 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+﻿@inject IAuthService authService
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="fa fa-bars"></span> Меню
@@ -15,20 +16,40 @@
                     <NavLink href="top-seller" class="nav-link">Топ переглядів</NavLink>
                 </li>
                 @*<li class="nav-item">
-                    <NavLink href="blog" class="nav-link">Блог</NavLink>
-                </li>*@
+                        <NavLink href="blog" class="nav-link">Блог</NavLink>
+                    </li>*@
                 <li class="nav-item">
                     <NavLink href="about" class="nav-link">Про нас</NavLink>
                 </li>
                 <li class="nav-item">
                     <NavLink href="contact" class="nav-link">Контакти</NavLink>
                 </li>
-                <li class="nav-item">
-                    <NavLink href="login" class="nav-link">Вхід</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink href="register" class="nav-link">Реєстрація</NavLink>
-                </li>
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item dropdown" style="margin-top: 10px">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Особистий кабінет
+                            </button>
+                            <div class="dropdown-menu my-0" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="/profile">Профайл</a>
+                                <a class="dropdown-item" href="/photo-edit">Оновити фото</a>
+                                <a class="dropdown-item" href="/change-password">Змінити пароль</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/book-add">Додати книгу</a>
+                                <div class="dropdown-divider"></div>
+                                <span style="cursor: pointer;" class="dropdown-item" @onclick="() => authService.Logout()">Вийти</span>
+                            </div>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <NavLink href="login" class="nav-link">Вхід</NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink href="register" class="nav-link">Реєстрація</NavLink>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
             </ul>
         </div>
     </div>

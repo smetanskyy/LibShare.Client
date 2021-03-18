@@ -33,7 +33,11 @@ namespace LibShare.Client
             #endregion
 
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationStateTestProvider>();
+            builder.Services.AddScoped<JWTAuthenticationStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>());
+            builder.Services.AddScoped<IAuthService, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>());
             builder.Services.AddSingleton(new SearchState());
             #region Interfaces
             builder.Services.AddTransient<IAccountService, AccountService>();

@@ -15,7 +15,7 @@ namespace LibShare.Client.Pages
         IJSRuntime JSRuntime { get; set; }
 
         [Inject]
-        IAccountService accountService { get; set; }
+        IAuthService authService { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
@@ -42,7 +42,7 @@ namespace LibShare.Client.Pages
             {
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
                 Model.UserName = Model.Email;
-                var response = await accountService.RegisterUserAsync(Model);
+                await authService.Register(Model);
                 LoadSpinner.Hide();
                 NavigationManager.NavigateTo("/index");
             }

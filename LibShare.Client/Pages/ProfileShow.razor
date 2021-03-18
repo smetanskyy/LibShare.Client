@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-md-12 mb-5">
                                 <div class="imagebox">
-                                    <img src="/images/person_2.jpg" class="rounded-circle mx-auto d-block image" alt="profile image">
+                                    <img src="@Model.Photo" onError="this.src='/images/no-avatar.png'" class="rounded-circle d-block image" alt="profile image">
                                     <div class="middle">
                                         <button @onclick="GoToChangePhoto" class="btn btn-primary">Оновити фото</button>
                                     </div>
@@ -57,7 +57,7 @@
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
                                     <label class="label" for="">Дата народження: </label>
-                                    <input type="date" readonly class="form-control" value="@Model.DateOfBirth" />
+                                    <input type="date" readonly class="form-control" @bind-value="@Model.DateOfBirth" />
                                 </div>
                             </div>
 

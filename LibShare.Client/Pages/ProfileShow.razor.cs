@@ -1,7 +1,10 @@
 ﻿using LibShare.Client.Components;
 using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
@@ -17,6 +20,18 @@ namespace LibShare.Client.Pages
         public UserApiModel Model { get; set; } = new UserApiModel();
 
         Spinner LoadSpinner { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                Model = await HttpService.Get<UserApiModel>(ApiUrls.ClientInfo);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+        }
 
         public string ErrorMessage { get; set; }
 

@@ -1,17 +1,19 @@
 ﻿.imagebox {
     position: relative;
-    width: 60%;
     margin-left: auto;
     margin-right: auto;
+    width: 60%;
 }
 
 .image {
     opacity: 1;
     display: block;
     width: auto;
-    height: 60%;
+    width: 90%;
     transition: .5s ease;
     backface-visibility: hidden;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .middle {
