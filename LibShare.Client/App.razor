@@ -2,10 +2,10 @@
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
             <Authorizing>
-                <text class="m-4"> Авторизація ... </text>
+                <text class="m-4"> Authorizing ... </text>
             </Authorizing>
             <NotAuthorized>
-                <text class="m-4"> Потрібно спочатку авторизуватися! </text>
+                <h3 class="m-4"> Not Authorized! </h3>
             </NotAuthorized>
         </AuthorizeRouteView>
     </Found>
