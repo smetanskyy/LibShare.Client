@@ -1,4 +1,5 @@
 ﻿@page "/profile"
+@attribute [Authorize]
 
 <section class="ftco-section bg-light">
     <div class="container">
@@ -22,7 +23,7 @@
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
                                     <label class="label" for="name">Ім'я: </label>
-                                    <input readonly class="form-control" type="text" placeholder="Ім'я" 
+                                    <input readonly class="form-control" type="text" placeholder="Ім'я"
                                            value="@Model.Name" />
                                 </div>
                             </div>
@@ -30,7 +31,7 @@
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
                                     <label class="label" for="name">Прізвище: </label>
-                                    <input readonly class="form-control" type="text" placeholder="Прізвище" 
+                                    <input readonly class="form-control" type="text" placeholder="Прізвище"
                                            value="@Model.Surname" />
                                 </div>
                             </div>
@@ -39,7 +40,7 @@
                             <div class="col-md-12 mb-4">
                                 <div class="form-group">
                                     <label class="label" for="email">Email: </label>
-                                    <input readonly type="text" class="form-control" placeholder="Email" 
+                                    <input readonly type="text" class="form-control" placeholder="Email"
                                            value="@Model.Email" />
                                 </div>
                             </div>

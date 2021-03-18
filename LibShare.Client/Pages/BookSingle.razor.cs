@@ -1,4 +1,5 @@
-﻿using LibShare.Client.Data.ApiModels;
+﻿using LibShare.Client.Components;
+using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -14,13 +15,15 @@ namespace LibShare.Client.Pages
         private string callToOwner = "Зв'язатися з власником книги";
 
         public BookApiModel BookItem { get; set; }
-        public string ReferDoawloadBook { get; set; }
+        public string ReferDownloadBook { get; set; }
 
         [Inject]
         ILibraryService LibraryService { get; set; }
 
         [Inject]
         NavigationManager navigationManager { get; set; }
+
+        DialogModal dialogModal { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -41,7 +44,7 @@ namespace LibShare.Client.Pages
 
                 Console.WriteLine("bookIdFromUrl " + bookIdFromUrl);
                 BookItem = await LibraryService.GetBookByIdAsync(bookIdFromUrl);
-                ReferDoawloadBook = QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", BookItem.Id);
+                ReferDownloadBook = QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", BookItem.Id);
             }
             catch (Exception ex)
             {

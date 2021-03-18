@@ -1,5 +1,6 @@
 ﻿@page "/photo-edit"
 @inject IFileReaderService FileReaderService
+@attribute [Authorize]
 
 <section class="ftco-section bg-light m-0 p-0">
     <div class="container">
@@ -11,8 +12,8 @@
                 }
                 @if (ImageUrl != null)
                 {
-                    <img class="rounded" style="object-fit: cover; max-width: 90%; height: 90%;" src="@ImageUrl" alt="Change photo" 
-                         onError="this.src='/images/person_2.jpg'"/>
+                    <img class="rounded" style="object-fit: cover; max-width: 90%; height: 90%;" src="@ImageUrl" alt="Change photo"
+                         onError="this.src='/images/person_2.jpg'" />
                 }
             </div>
 

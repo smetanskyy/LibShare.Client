@@ -10,9 +10,20 @@
                 }
                 @if (BookItem.IsEbook == true)
                 {
-                    <a href="@ReferToDoawloadBook()" class="icon d-flex align-items-center justify-content-center" title="@download">
-                        <i class="fa fa-download" aria-hidden="true"></i>
-                    </a>
+                    <AuthorizeView>
+                        <Authorized>
+                            <a href="@ReferToDownloadBook()" class="icon d-flex align-items-center justify-content-center" title="@download">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                            </a>
+                        </Authorized>
+
+                        <NotAuthorized>
+                            <DialogModal @ref="dialogModal" />
+                            <button @onclick="() => dialogModal.Show()" class="icon d-flex align-items-center justify-content-center" title="@download">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                            </button>
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
                 <a href="@ReferToBook()" class="icon d-flex align-items-center justify-content-center" title="@view">
                     <span class="flaticon-search"></span>

@@ -15,6 +15,8 @@ namespace LibShare.Client.Components
         [Parameter]
         public BookApiModel BookItem { get; set; }
 
+        DialogModal dialogModal { get; set; }
+
         private string download = "Завантажити книгу";
         private string callToOwner = "Зв'язатися з власником книги";
         private string view = "Переглянути";
@@ -49,7 +51,7 @@ namespace LibShare.Client.Components
             navigationManager.NavigateTo(ReferToBook());
         }
 
-        private string ReferToDoawloadBook()
+        private string ReferToDownloadBook()
         {
             return QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", BookItem.Id);
         }

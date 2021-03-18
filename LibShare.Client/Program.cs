@@ -1,6 +1,8 @@
 using LibShare.Client.Data.Interfaces;
+using LibShare.Client.Data.Providers;
 using LibShare.Client.Data.Services;
 using LibShare.Client.Helpers;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -30,6 +32,8 @@ namespace LibShare.Client
             //builder.Services.AddFileReaderService(o => o.UseWasmSharedBuffer = true);
             #endregion
 
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationStateTestProvider>();
             builder.Services.AddSingleton(new SearchState());
             #region Interfaces
             builder.Services.AddTransient<IAccountService, AccountService>();

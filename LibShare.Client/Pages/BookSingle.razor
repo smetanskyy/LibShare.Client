@@ -24,7 +24,16 @@
                         }
                         @if (BookItem.IsEbook == true)
                         {
-                            <a href="@ReferDoawloadBook" class="btn btn-primary">@download</a>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <a href="@ReferDownloadBook" class="btn btn-primary" title="@download">@download</a>
+                                </Authorized>
+
+                                <NotAuthorized>
+                                    <DialogModal @ref="dialogModal" />
+                                    <button @onclick="() => dialogModal.Show()" class="btn btn-primary" title="@download">@download</button>
+                                </NotAuthorized>
+                            </AuthorizeView>
                         }
                     </div>
                 </div>
