@@ -27,7 +27,6 @@ namespace LibShare.Client.Pages
 
         private Spinner LoadSpinner { get; set; }
 
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)

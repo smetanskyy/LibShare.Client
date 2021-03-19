@@ -15,6 +15,11 @@ namespace LibShare.Client.Helpers
             await jSRuntime.InvokeVoidAsync("showRecaptcha");
         }
 
+        public static async ValueTask LoadCropper(this IJSRuntime jSRuntime, object obj)
+        {
+            await jSRuntime.InvokeVoidAsync("cropperLoad", DotNetObjectReference.Create(obj));
+        }
+
         public static async void HideRecaptchaIcon(this IJSRuntime jSRuntime)
         {
             await jSRuntime.InvokeVoidAsync("hideRecaptcha");

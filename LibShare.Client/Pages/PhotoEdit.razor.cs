@@ -1,38 +1,59 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using LibShare.Client.Data.ApiModels;
+using LibShare.Client.Data.Constants;
+using LibShare.Client.Data.Interfaces;
+using LibShare.Client.Helpers;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
     public partial class PhotoEdit
     {
-        public string ErrorMessage { get; set; }
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
 
-        public string ImageUrl { get; set; } = "";
-        public string ImageBase64 { get; set; }
-        public bool IsPhotoLoaded { get; set; } = false;
-
-        public ElementReference InputElementImage { get; private set; }
-
-        async Task ImageFileSelected()
+        [JSInvokable]
+        public void InvokeMethod(string data)
         {
-            foreach (var file in await FileReaderService.CreateReference(InputElementImage).EnumerateFilesAsync())
-            {
-                using (MemoryStream memoryStream = await file.CreateMemoryStreamAsync(4 * 1024))
-                {
-                    var imageBytes = new byte[memoryStream.Length];
-                    memoryStream.Read(imageBytes, 0, (int)memoryStream.Length);
-                    ImageBase64 = Convert.ToBase64String(imageBytes);
-                    ImageUrl = $"data:image/jpeg;base64, {ImageBase64}";
-                    IsPhotoLoaded = true;
-                    ImageUrl = null;
-                    StateHasChanged();
-                }
-            }
-
+            Photo = data;
+            StateHasChanged();
         }
+
+        public string ErrorMessage { get; set; }
+        [Inject]
+        IHttpService HttpService { get; set; }
+
+        [Parameter]
+        public string Photo { get; set; }
+
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                var response = await HttpService.Get<ImageApiModel>(ApiUrls.ClientPhoto);
+                if(response != null)
+                {
+                    Photo = response.Photo;
+                }
+                await JSRuntime.LoadCropper(this);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                Console.WriteLine("Error Message: " + ErrorMessage);
+            }
+        }
+
+        private async Task UpdatePhoto()
+        {
+            await HttpService.Post<ImageApiModel, ImageApiModel>(ApiUrls.ChangePhoto, new ImageApiModel() { Photo = Photo });
+            NavigationManager.NavigateTo("/profile");
+        }
+
     }
 }

@@ -11,6 +11,7 @@ namespace LibShare.Client.Data.Interfaces
         Task Login(LoginApiModel model);
         Task Register(RegisterApiModel model);
         Task Logout();
-        Task RefreshToken(TokenApiModel model);
+        Task RefreshToken();
+        Task UpdateToken(TokenApiModel model);
     }
 }

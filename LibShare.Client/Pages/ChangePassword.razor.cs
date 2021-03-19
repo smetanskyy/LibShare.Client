@@ -18,8 +18,6 @@ namespace LibShare.Client.Pages
         [Inject]
         IHttpService _httpService { get; set; }
 
-        IAccountService accountService { get; set; }
-
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
@@ -27,6 +25,9 @@ namespace LibShare.Client.Pages
         public ChangePasswordApiModel Model { get; set; } = new ChangePasswordApiModel();
 
         public string ErrorMessage { get; set; }
+        
+        [Inject]
+        IAuthService authService { get; set; }
 
         private Spinner LoadSpinner { get; set; }
 
@@ -44,7 +45,9 @@ namespace LibShare.Client.Pages
             try
             {
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
-                var response = _httpService.Post<ChangePasswordApiModel, TokenApiModel>(ApiUrls.ChangePasswordUrl, Model);
+                Console.WriteLine(Model.RecaptchaToken);
+                var response = await _httpService.Post<ChangePasswordApiModel, TokenApiModel>(ApiUrls.ChangePasswordUrl, Model);
+                await authService.UpdateToken(response);
                 LoadSpinner.Hide();
                 NavigationManager.NavigateTo("/index");
             }

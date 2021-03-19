@@ -1,33 +1,34 @@
 ﻿@page "/book-add"
 @inject IFileReaderService FileReaderService
 
+<Spinner @ref="LoadSpinner" />
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row">
             <div class="@(IsPhotoLoaded == false ? "col-md-12" : "col-md-6") pl-md-5 py-5">
                 @if (ErrorMessage != null)
                 {
-                    <h3 class="mb-4">Помилка сервера: <span style="color: indianred">@ErrorMessage</span> </h3>
+                    <h3 class="mb-4">Помилка: <span style="color: indianred">@ErrorMessage</span> </h3>
                 }
 
-                <EditForm method="POST" id="addForm" name="addForm" class="contactForm" Model="@BookModel" OnSubmit="OnSubmitHandle">
+                <EditForm @oninput="() => ErrorMessage = null" method="POST" id="addForm" name="addForm" class="contactForm" Model="@BookModel" OnSubmit="OnSubmitHandle">
 
                     <div class="form-row">
                         <div class="col-md-12">
-                            <InputText class="form-control" @bind-Value="BookModel.Title" placeholder="Назва: " />
+                            <InputText class="form-control px-2" @bind-Value="BookModel.Title" placeholder="Назва: " required />
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row mt-2">
                         <div class="col-md-12">
-                            <InputText class="form-control" @bind-Value="BookModel.Author" placeholder="Автор: " />
+                            <InputText class="form-control px-2" @bind-Value="BookModel.Author" placeholder="Автор: " />
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row mt-2">
                         <div class="col-md-12 form-group">
                             <label for="exampleFormControlTextarea1">Опис книги:</label>
-                            <InputTextArea class="form-control" @bind-Value="BookModel.Description" rows="12" />
+                            <InputTextArea class="form-control p-2" @bind-Value="BookModel.Description" rows="12" required />
                         </div>
                     </div>
 
@@ -36,26 +37,30 @@
                             <label class="input-group-text" for="inputGroupSelect01">Категорія: </label>
                         </div>
                         <select @bind="BookModel.CategoryId" class="custom-select" id="inputGroupSelect01" required>
-                            <option selected>Choose...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option selected> ... </option>
+                            @if (Categories != null)
+                            {
+                                @foreach (var item in Categories)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
                         </select>
                     </div>
 
                     <div class="form-row">
                         <div class="col">
-                            <InputText class="form-control" @bind-Value="BookModel.Year" placeholder="Рік випуску" />
+                            <InputNumber class="form-control px-2" @bind-Value="Year" placeholder="Рік випуску" />
                         </div>
 
                         <div class="col">
-                            <InputText class="form-control" @bind-Value="BookModel.Language" placeholder="Мова книги" />
+                            <InputText class="form-control px-2" @bind-Value="BookModel.Language" placeholder="Мова книги" />
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="col-md-7">
-                            <InputText class="form-control" @bind-Value="BookModel.Publisher" placeholder="Видавництво: " />
+                            <InputText class="form-control px-2" @bind-Value="BookModel.Publisher" placeholder="Видавництво: " />
                         </div>
 
                         <div class="mt-1 col-md-5">
@@ -70,11 +75,11 @@
 
                     <div class="input-group mt-4 mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">Обрати обкладинку</span>
+                            <span class="input-group-text @(IsImageSelected ? "bg-success" : null)">Обрати обкладинку</span>
                         </div>
                         <div class="custom-file">
                             <input class="custom-file-input" id="inputGroupFile01"
-                                   type="file" @ref="InputElementImage" @onchange="ImageFileSelected" accept=".jpg,.jpeg,.png" />
+                                   type="file" @ref="InputElementImage" @onchange="ImageFileSelected" accept=".jpg,.jpeg,.png" required />
                             <label class="custom-file-label" for="inputGroupFile01">Вибрати файл</label>
                         </div>
 
@@ -84,10 +89,10 @@
                     {
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Завантажити книгу</span>
+                                <span class="input-group-text @(IsFileSelected ? "bg-success" : null)">Завантажити книгу</span>
                             </div>
                             <div class="custom-file">
-                                <InputFile type="file" class="custom-file-input" id="inputGroupFile02" required />
+                                <input type="file" @ref="InputElementFile" @onchange="FileSelected" class="custom-file-input" id="inputGroupFile02" accept=".pdf,.doc,.epub,.djvu" required />
                                 <label class="custom-file-label" for="inputGroupFile02">Вибрати файл</label>
                             </div>
                         </div>
@@ -96,7 +101,6 @@
                     <div class="row">
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Додати книгу</button>
                     </div>
-                    @*<InputFileSelect />*@
                 </EditForm>
             </div>
 

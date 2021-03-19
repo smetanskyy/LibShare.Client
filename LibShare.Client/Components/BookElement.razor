@@ -4,9 +4,20 @@
             <div class="in-text">
                 @if (Book.IsEbook == false)
                 {
-                    <a href="#" class="icon d-flex align-items-center justify-content-center" title="@callToOwner">
-                        <span class="flaticon-shopping-cart"></span>
-                    </a>
+                    <AuthorizeView>
+                        <Authorized>
+                            <a href="@ReferToCallOwner()" class="icon d-flex align-items-center justify-content-center" title="@callToOwner">
+                                <span class="flaticon-shopping-cart"></span>
+                            </a>
+                        </Authorized>
+
+                        <NotAuthorized>
+                            <DialogModal @ref="dialogModal" />
+                            <button @onclick="() => dialogModal.Show()" class="icon d-flex align-items-center justify-content-center" title="@download">
+                                <span class="flaticon-shopping-cart"></span>
+                            </button>
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
                 @if (Book.IsEbook == true)
                 {

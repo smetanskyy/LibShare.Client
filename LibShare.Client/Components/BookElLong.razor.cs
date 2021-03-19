@@ -55,5 +55,10 @@ namespace LibShare.Client.Components
         {
             return QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", BookItem.Id);
         }
+
+        private string ReferToCallOwner()
+        {
+            return QueryHelpers.AddQueryString("/call-to-owner", "bookId", BookItem.Id);
+        }
     }
 }

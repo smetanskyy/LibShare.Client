@@ -9,52 +9,53 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class BookSingle
+    public partial class CallToOwner
     {
-        private string download = "Завантажити книгу";
-        private string callToOwner = "Зв'язатися з власником книги";
-
-        public BookApiModel BookItem { get; set; }
-        public string ReferDownloadBook { get; set; }
+        [Inject]
+        IHttpService HttpService { get; set; }
 
         [Inject]
         ILibraryService LibraryService { get; set; }
 
         [Inject]
-        NavigationManager navigationManager { get; set; }
+        NavigationManager NavigationManager { get; set; }
 
-        DialogModal dialogModal { get; set; }
+        [Parameter]
+        public UserApiModel Model { get; set; } = new UserApiModel();
 
-        public string ErrorMessage { get; set; }
+        Spinner LoadSpinner { get; set; }
 
-        private string ReferToCallOwner()
-        {
-            return QueryHelpers.AddQueryString("/call-to-owner", "bookId", BookItem.Id);
-        }
+        BookApiModel BookItem { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                string bookIdFromUrl = "book1";
-                var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+                string bookIdFromUrl = "";
+                var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
                 if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("bookId", out var bookId))
                 {
                     bookIdFromUrl = bookId;
                 }
                 else
                 {
-                    bookIdFromUrl = "book1";
+                    NavigationManager.NavigateTo("/books");
                 }
+
+                if (string.IsNullOrWhiteSpace(bookIdFromUrl))
+                    NavigationManager.NavigateTo("/books");
 
                 Console.WriteLine("bookIdFromUrl " + bookIdFromUrl);
                 BookItem = await LibraryService.GetBookByIdAsync(bookIdFromUrl);
-                ReferDownloadBook = QueryHelpers.AddQueryString(ApiUrls.FileDownload, "bookId", BookItem.Id);
+                Model = await HttpService.Get<UserApiModel>(ApiUrls.ClientInfo);
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
             }
         }
+
+        public string ErrorMessage { get; set; }
+
     }
 }

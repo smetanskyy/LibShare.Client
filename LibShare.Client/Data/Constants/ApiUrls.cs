@@ -24,6 +24,7 @@ namespace LibShare.Client.Data.Constants
         public static string ChangePhoto { get; set; } = ApiBaseUrl + "/api/client/change-photo";
         public static string ClientEditProfile { get; set; } = ApiBaseUrl + "/api/client/set-profile";
         public static string FileUpload { get; set; } = ApiBaseUrl + "/api/file/upload";
+        public static string FileUploadImage { get; set; } = ApiBaseUrl + "/api/file/upload-image";
         public static string FileDownload { get; set; } = ApiBaseUrl + "/api/file/download";
         public static string GetUserById { get; set; } = ApiBaseUrl + "/api/admin/get-user/";
         public static string LibraryAllCategories { get; set; } = ApiBaseUrl + "/api/library/all-categories";

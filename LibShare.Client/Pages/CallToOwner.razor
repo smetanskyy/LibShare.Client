@@ -1,0 +1,49 @@
+﻿@page "/call-to-owner"
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-md-12">
+                <div class="contact-wrap bg-light w-100 p-md-5 p-4">
+                    <h3 class="mb-4">Зв'язатися з власником книги</h3>
+                    <EditForm Model="Model" method="POST" id="contactForm" name="contactForm" class="contactForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="label" for="name">Ім'я</label>
+                                    <InputText @bind-Value="Model.Name" class="form-control px-2" name="name" id="name" placeholder="Ім'я"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="label" for="email">Email</label>
+                                    <InputText type="email" @bind-Value="Model.Email" class="form-control px-2" name="email" id="email" placeholder="Email"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="label" for="subject">Тема</label>
+                                    <InputText class="form-control px-2" name="subject" id="subject" placeholder="Тема"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="label" for="#">Текст повідомлення</label>
+                                    <textarea name="message" class="form-control px-2" id="message" cols="30" rows="4" placeholder="Текст повідомлення"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="submit" value="Відправити повідомлення" class="btn btn-primary px-2">
+                                    <div class="submitting"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

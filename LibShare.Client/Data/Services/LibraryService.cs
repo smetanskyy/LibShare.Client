@@ -68,7 +68,12 @@ namespace LibShare.Client.Data.Services
         {
             var query = QueryHelpers.AddQueryString(ApiUrls.FileUpload, "bookId", bookId);
             await _httpClient.PostAsync(query, content);
-            //var postContent = await postResult.Content.ReadAsStringAsync();
+        }
+
+        public async Task UploadBookImage(string bookId, ImageApiModel model)
+        {
+            var query = QueryHelpers.AddQueryString(ApiUrls.FileUploadImage, "bookId", bookId);
+            await _httpService.Post<ImageApiModel, MessageApiModel>(query, model);
         }
     }
 }

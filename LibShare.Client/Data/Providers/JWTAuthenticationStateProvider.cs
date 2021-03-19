@@ -49,8 +49,6 @@ namespace LibShare.Client.Data.Providers
             }
 
             var decodeToken = ReadJwtToken(token);
-            Console.WriteLine(decodeToken.ValidTo.ToLocalTime());
-            Console.WriteLine(DateTime.Now);
             if(decodeToken.ValidTo.ToLocalTime() < DateTime.Now)
             {
                 try
@@ -113,15 +111,37 @@ namespace LibShare.Client.Data.Providers
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
         }
 
-        public async Task RefreshToken(TokenApiModel model)
+        public async Task RefreshToken()
         {
-            var tokens = await _accountService.RefreshTokenAsync(model);
+            var token = await _jSRuntime.GetFromLocalStorage(jwtKey);
+            var refreshToken = await _jSRuntime.GetFromLocalStorage(tokenRefreshKey);
+            if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(refreshToken))
+                await Logout();
+            var decodeToken = ReadJwtToken(token);
+            if (decodeToken.ValidTo.ToLocalTime() < DateTime.Now)
+            {
+                try
+                {
+                    var tokens = await _accountService.RefreshTokenAsync(new TokenApiModel
+                    {
+                        Token = token,
+                        RefreshToken = refreshToken
+                    });
 
-            await _jSRuntime.SetInLocalStorage(jwtKey, tokens.Token);
-            await _jSRuntime.SetInLocalStorage(tokenRefreshKey, tokens.RefreshToken);
+                    await _jSRuntime.SetInLocalStorage(jwtKey, tokens.Token);
+                    await _jSRuntime.SetInLocalStorage(tokenRefreshKey, tokens.RefreshToken);
 
-            var authState = BuildAuthenticationState(tokens.Token);
-            NotifyAuthenticationStateChanged(Task.FromResult(authState));
+                    var authState = BuildAuthenticationState(tokens.Token);
+                    NotifyAuthenticationStateChanged(Task.FromResult(authState));
+                    Console.WriteLine("Refreshing ... ");
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error from server: " + ex.Message);
+                    await Logout();
+                }
+            }
         }
 
         public async Task Logout()
@@ -132,6 +152,15 @@ namespace LibShare.Client.Data.Providers
             NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
             await _accountService.LogoutAsync();
             _navigationManager.NavigateTo("/login");
+        }
+
+        public async Task UpdateToken(TokenApiModel tokens)
+        {
+            await _jSRuntime.SetInLocalStorage(jwtKey, tokens.Token);
+            await _jSRuntime.SetInLocalStorage(tokenRefreshKey, tokens.RefreshToken);
+
+            var authState = BuildAuthenticationState(tokens.Token);
+            NotifyAuthenticationStateChanged(Task.FromResult(authState));
         }
     }
 }

@@ -18,5 +18,6 @@ namespace LibShare.Client.Data.Interfaces
         Task<PagedListApiModel<BookApiModel>> GetBooks(string url);
         Task GetBookFileAsync(string url);
         Task UploadFile(string bookId, MultipartFormDataContent content);
+        Task UploadBookImage(string bookId, ImageApiModel model);
     }
 }
