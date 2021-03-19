@@ -26,7 +26,7 @@ namespace LibShare.Client.Pages
         IHttpService HttpService { get; set; }
 
         [Parameter]
-        public string Photo { get; set; }
+        public string Photo { get; set; } = "";
 
         [Inject]
         NavigationManager NavigationManager { get; set; }

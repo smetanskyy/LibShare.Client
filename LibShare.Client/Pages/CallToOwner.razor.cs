@@ -12,6 +12,8 @@ namespace LibShare.Client.Pages
     public partial class CallToOwner
     {
         [Inject]
+        IAuthService AuthService { get; set; }
+        [Inject]
         IHttpService HttpService { get; set; }
 
         [Inject]
@@ -23,9 +25,12 @@ namespace LibShare.Client.Pages
         [Parameter]
         public UserApiModel Model { get; set; } = new UserApiModel();
 
+        public string Subject { get; set; } = "Замовлення книги";
+        public string Text { get; set; } = "Прошу відправити мені книгу ";
+
         Spinner LoadSpinner { get; set; }
 
-        BookApiModel BookItem { get; set; }
+        BookApiModel BookItem { get; set; } = new BookApiModel();
 
         protected override async Task OnInitializedAsync()
         {
@@ -48,10 +53,31 @@ namespace LibShare.Client.Pages
                 Console.WriteLine("bookIdFromUrl " + bookIdFromUrl);
                 BookItem = await LibraryService.GetBookByIdAsync(bookIdFromUrl);
                 Model = await HttpService.Get<UserApiModel>(ApiUrls.ClientInfo);
+                Text = Text + BookItem.Title;
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
+            }
+        }
+
+
+        async void OnSubmitHandle()
+        {
+            try
+            {
+                var message = new CallOwnerApiModel();
+                message.Subject = Subject;
+                message.Text = Text;
+                message.BookId = BookItem.Id;
+                await AuthService.RefreshToken();
+                await HttpService.Post<CallOwnerApiModel, MessageApiModel>(ApiUrls.CallToOwner, message);
+                NavigationManager.NavigateTo("/index");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                Console.WriteLine("Error Message: " + ErrorMessage);
             }
         }
 

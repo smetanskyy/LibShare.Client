@@ -7,7 +7,7 @@
             <!-- <h3>Demo:</h3> -->
             <div class="docs-demo">
                 <div class="img-container">
-                    <img src="@Photo" onError="this.src='/images/no-avatar.png'" alt="Picture">
+                    <img src="@(string.IsNullOrWhiteSpace(Photo)? "/images/no-avatar.png" : @Photo)" onError="this.src='/images/no-avatar.png'" alt="Picture">
                 </div>
             </div>
         </div>
