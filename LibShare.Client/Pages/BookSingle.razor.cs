@@ -13,6 +13,7 @@ namespace LibShare.Client.Pages
     {
         private string download = "Завантажити книгу";
         private string callToOwner = "Зв'язатися з власником книги";
+        [CascadingParameter] public Toast Toast { get; set; }
 
         public BookApiModel BookItem { get; set; }
         public string ReferDownloadBook { get; set; }
@@ -54,6 +55,7 @@ namespace LibShare.Client.Pages
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
+                Toast.ShowError(ex.Message);
             }
         }
     }

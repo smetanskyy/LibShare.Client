@@ -14,6 +14,7 @@ namespace LibShare.Client.Pages
     {
         [Inject]
         IJSRuntime JSRuntime { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         [Inject]
         IHttpService _httpService { get; set; }
@@ -49,12 +50,14 @@ namespace LibShare.Client.Pages
                 var response = await _httpService.Post<ChangePasswordApiModel, TokenApiModel>(ApiUrls.ChangePasswordUrl, Model);
                 await authService.UpdateToken(response);
                 LoadSpinner.Hide();
+                Toast.ShowSuccess("Пароль успішно змінено!");
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
+                Toast.ShowError(ex.Message);
                 StateHasChanged();
             }
         }

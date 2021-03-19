@@ -1,4 +1,5 @@
-﻿using LibShare.Client.Data.ApiModels;
+﻿using LibShare.Client.Components;
+using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using LibShare.Client.Helpers;
@@ -20,6 +21,7 @@ namespace LibShare.Client.Pages
             Photo = data;
             StateHasChanged();
         }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         public string ErrorMessage { get; set; }
         [Inject]
@@ -45,6 +47,7 @@ namespace LibShare.Client.Pages
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
+                Toast.ShowError(ex.Message);
                 Console.WriteLine("Error Message: " + ErrorMessage);
             }
         }
@@ -52,6 +55,7 @@ namespace LibShare.Client.Pages
         private async Task UpdatePhoto()
         {
             await HttpService.Post<ImageApiModel, ImageApiModel>(ApiUrls.ChangePhoto, new ImageApiModel() { Photo = Photo });
+            Toast.ShowSuccess("Фото успішно змінено!");
             NavigationManager.NavigateTo("/profile");
         }
 

@@ -1,4 +1,5 @@
-﻿using LibShare.Client.Data.ApiModels;
+﻿using LibShare.Client.Components;
+using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -13,7 +14,7 @@ namespace LibShare.Client.Pages
     {
         [Inject]
         ILibraryService LibraryService { get; set; }
-
+        [CascadingParameter] public Toast Toast { get; set; }
         [Parameter] public int PageSize { get; set; } = 12;
         [Parameter] public int PageNumber { get; set; } = 1;
         [Parameter] public bool OnlyEbooks { get; set; } = false;
@@ -113,7 +114,9 @@ namespace LibShare.Client.Pages
             catch (Exception ex)
             {
                 BooksList = null;
+                Toast.ShowError(ex.Message);
                 ErrorMessage = ex.Message;
+                navigationManager.NavigateTo("/index");
             }
         }
 

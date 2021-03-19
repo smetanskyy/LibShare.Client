@@ -12,6 +12,7 @@ namespace LibShare.Client.Pages
     {
         [Inject]
         IHttpService HttpService { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
@@ -29,6 +30,7 @@ namespace LibShare.Client.Pages
             }
             catch (Exception ex)
             {
+                Toast.ShowError(ex.Message); l
                 ErrorMessage = ex.Message;
             }
         }

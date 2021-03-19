@@ -19,6 +19,7 @@ namespace LibShare.Client.Pages
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         [Parameter]
         public RegisterApiModel Model { get; set; } = new RegisterApiModel();
@@ -44,6 +45,7 @@ namespace LibShare.Client.Pages
                 Model.UserName = Model.Email;
                 await authService.Register(Model);
                 LoadSpinner.Hide();
+                Toast.ShowSuccess("Ви успішно зареєструвалися!");
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)
@@ -51,6 +53,7 @@ namespace LibShare.Client.Pages
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
                 StateHasChanged();
+                Toast.ShowError(ex.Message);
             }
         }
 

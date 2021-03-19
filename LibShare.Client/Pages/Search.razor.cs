@@ -1,4 +1,5 @@
-﻿using LibShare.Client.Data.ApiModels;
+﻿using LibShare.Client.Components;
+using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using LibShare.Client.Helpers;
@@ -14,6 +15,7 @@ namespace LibShare.Client.Pages
     {
         [Inject]
         ILibraryService LibraryService { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         [Inject]
         public SearchState searchState { get; set; }
@@ -149,6 +151,7 @@ namespace LibShare.Client.Pages
             catch (Exception ex)
             {
                 BooksList = null;
+                Toast.ShowError(ex.Message);
                 ErrorMessage = ex.Message;
             }
         }

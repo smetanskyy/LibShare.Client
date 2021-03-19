@@ -81,6 +81,18 @@
             $('.grecaptcha-badge').css('visibility', 'hidden');
         }
 
+        showToast = function () {
+            $(document).ready(function () {
+                $('.toast').toast('show');
+            });
+        }
+
+        hideToast = function () {
+            $(document).ready(function () {
+                $('.toast').toast('hide');
+            });
+        }
+
         cropperLoad = function (helpers) {
             setTimeout(() => {
 

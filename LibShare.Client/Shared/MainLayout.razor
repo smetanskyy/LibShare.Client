@@ -3,14 +3,17 @@
 
 <AboveNavMenu />
 <NavMenu />
-
+<Toast @ref="Toast" />>
 <div>
-    @Body
+    <CascadingValue Value="Toast">
+        @Body
+    </CascadingValue>
 </div>
 
 <Footer />
 
 @code {
+    [CascadingParameter] public Toast Toast { get; set; }
     protected override async void OnAfterRender(bool firstRender)
     {
         await JSRuntime.RenderJS();

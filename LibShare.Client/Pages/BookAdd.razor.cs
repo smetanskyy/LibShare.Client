@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -15,13 +14,11 @@ namespace LibShare.Client.Pages
 {
     public partial class BookAdd
     {
-        [Inject]
-        ILibraryService LibraryService { get; set; }
-        [Inject]
-        IAuthService authService { get; set; }
-        [Inject]
-        NavigationManager NavigationManager { get; set; }
+        [Inject] ILibraryService LibraryService { get; set; }
+        [Inject] IAuthService authService { get; set; }
+        [Inject] NavigationManager NavigationManager { get; set; }
         Spinner LoadSpinner { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
         public string ErrorMessage { get; set; }
         public BookApiModel BookModel { get; set; } = new BookApiModel();
         public int Year { get; set; } = 2000;
@@ -101,14 +98,16 @@ namespace LibShare.Client.Pages
 
                 await authService.RefreshToken();
                 var result = await LibraryService.CreateBookAsync(BookModel);
-                
-                await LibraryService.UploadBookImage(result.Id, new ImageApiModel { Photo = ImageBase64});
+
+                await LibraryService.UploadBookImage(result.Id, new ImageApiModel { Photo = ImageBase64 });
                 await FileUpload(result.Id);
+                Toast.ShowSuccess("Книга успішно додана!");
                 NavigationManager.NavigateTo(QueryHelpers.AddQueryString("/book", "bookId", result.Id));
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
+                Toast.ShowError(ex.Message);
                 Console.WriteLine("Error Message: " + ErrorMessage);
             }
             finally

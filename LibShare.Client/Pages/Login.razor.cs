@@ -25,6 +25,7 @@ namespace LibShare.Client.Pages
 
         public LoginApiModel Model { get; set; } = new LoginApiModel();
 
+        [CascadingParameter] public Toast Toast { get; set; }
         private Spinner LoadSpinner { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -45,7 +46,7 @@ namespace LibShare.Client.Pages
                 LoadSpinner.Hide();
 
                 var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-
+                Toast.ShowSuccess("Ви успішно залогінилися!");
                 if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("returnUrl", out var returnUrl))
                 {
                     Console.WriteLine("Return Url: " + returnUrl);
@@ -62,6 +63,7 @@ namespace LibShare.Client.Pages
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
                 StateHasChanged();
+                Toast.ShowError(ex.Message);
             }
         }
 

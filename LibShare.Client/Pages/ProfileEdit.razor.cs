@@ -18,6 +18,7 @@ namespace LibShare.Client.Pages
 
         [Parameter]
         public UserApiModel Model { get; set; } = new UserApiModel();
+        [CascadingParameter] public Toast Toast { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -31,6 +32,7 @@ namespace LibShare.Client.Pages
             }
             catch (Exception ex)
             {
+                Toast.ShowError(ex.Message);
                 ErrorMessage = ex.Message;
             }
         }
@@ -42,6 +44,7 @@ namespace LibShare.Client.Pages
                 Model.UserName = Model.Email;
                 var response = await HttpService.Post<UserApiModel, UserApiModel>(ApiUrls.ClientEditProfile, Model);
                 LoadSpinner.Hide();
+                Toast.ShowSuccess("Профайл успішно змінено!");
                 NavigationManager.NavigateTo("/profile");
             }
             catch (Exception ex)
@@ -49,6 +52,7 @@ namespace LibShare.Client.Pages
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
                 StateHasChanged();
+                Toast.ShowError(ex.Message);
             }
         }
 

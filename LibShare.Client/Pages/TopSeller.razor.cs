@@ -21,6 +21,7 @@ namespace LibShare.Client.Pages
         [Parameter] public bool OnlyEbooks { get; set; } = false;
         [Parameter] public bool OnlyRealBooks { get; set; } = false;
         [Parameter] public string SortOrder { get; set; } = "10";
+        [CascadingParameter] public Toast Toast { get; set; }
 
         public int TotalAmountPages { get; set; } = 1;
         public List<BookApiModel> BooksList { get; set; }
@@ -99,6 +100,7 @@ namespace LibShare.Client.Pages
             catch (Exception ex)
             {
                 BooksList = null;
+                Toast.ShowError(ex.Message);
                 ErrorMessage = ex.Message;
             }
         }

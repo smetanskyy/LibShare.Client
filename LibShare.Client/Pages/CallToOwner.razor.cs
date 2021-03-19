@@ -15,6 +15,7 @@ namespace LibShare.Client.Pages
         IAuthService AuthService { get; set; }
         [Inject]
         IHttpService HttpService { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         [Inject]
         ILibraryService LibraryService { get; set; }
@@ -72,11 +73,13 @@ namespace LibShare.Client.Pages
                 message.BookId = BookItem.Id;
                 await AuthService.RefreshToken();
                 await HttpService.Post<CallOwnerApiModel, MessageApiModel>(ApiUrls.CallToOwner, message);
+                Toast.ShowSuccess("Повідомлення успішно відправлено!");
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
+                Toast.ShowError("Помилка. Повідомлення не відправлено!");
                 Console.WriteLine("Error Message: " + ErrorMessage);
             }
         }

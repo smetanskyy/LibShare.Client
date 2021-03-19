@@ -25,6 +25,7 @@ namespace LibShare.Client.Pages
         public EmailApiModel Model { get; set; } = new EmailApiModel();
 
         public string ErrorMessage { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         private Spinner LoadSpinner { get; set; }
 
@@ -44,6 +45,7 @@ namespace LibShare.Client.Pages
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
                 var response = await _httpService.Post<EmailApiModel, MessageApiModel>(ApiUrls.RestorePassworPartOneUrl, Model);
                 LoadSpinner.Hide();
+                Toast.ShowSuccess("Провірте пошту і прейдіть по посиланню!");
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)
@@ -51,6 +53,7 @@ namespace LibShare.Client.Pages
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
                 StateHasChanged();
+                Toast.ShowError(ex.Message);
             }
         }
 

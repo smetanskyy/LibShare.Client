@@ -22,6 +22,7 @@ namespace LibShare.Client.Pages
         [Parameter] public bool OnlyRealBooks { get; set; } = false;
         [Parameter] public string SortOrder { get; set; } = "1";
         public List<CategoryApiModel> Categories { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         public int TotalAmountPages { get; set; } = 1;
         public List<BookApiModel> BooksList { get; set; }
@@ -98,28 +99,15 @@ namespace LibShare.Client.Pages
         {
             GetParametersFromUrl();
             Console.WriteLine("Hello from OnInitializedAsync Books from Server");
-            await LoadGetogory();
             await LoadBooks(PageNumber);
-        }
-
-        private async Task LoadGetogory()
-        {
-            try
-            {
-                Category = await LibraryService.GetCategory(CategoryId);
-                Categories = await LibraryService.GetCategories();
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
-            }
         }
 
         private async Task LoadBooks(int pageYouNeed)
         {
             try
             {
-                await LoadGetogory();
+                Category = await LibraryService.GetCategory(CategoryId);
+                Categories = await LibraryService.GetCategories();
                 PageNumber = pageYouNeed;
                 var link = SetBaseUrlQuery(ApiUrls.LibraryBooksFilter);
                 Console.WriteLine("Link filter simple " + link);
@@ -141,6 +129,8 @@ namespace LibShare.Client.Pages
             {
                 BooksList = null;
                 ErrorMessage = ex.Message;
+                Toast.ShowError(ex.Message);
+                navigationManager.NavigateTo("/index");
             }
         }
 
