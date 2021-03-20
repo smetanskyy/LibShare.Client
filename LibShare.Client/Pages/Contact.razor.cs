@@ -3,9 +3,7 @@ using LibShare.Client.Data.ApiModels;
 using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
 using System;
-using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
@@ -33,6 +31,7 @@ namespace LibShare.Client.Pages
 
         async void OnSubmitHandle()
         {
+            LoadSpinner.Show();
             try
             {
                 Model.Email = Subject;
@@ -46,6 +45,10 @@ namespace LibShare.Client.Pages
                 ErrorMessage = ex.Message;
                 Toast.ShowError("Помилка. Повідомлення не відправлено!");
                 Console.WriteLine("Error Message: " + ErrorMessage);
+            }
+            finally
+            {
+                LoadSpinner.Hide();
             }
         }
 

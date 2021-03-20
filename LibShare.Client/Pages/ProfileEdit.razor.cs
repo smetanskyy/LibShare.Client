@@ -39,6 +39,7 @@ namespace LibShare.Client.Pages
 
         private async void OnSubmitHandle()
         {
+            LoadSpinner.Show();
             try
             {
                 Model.UserName = Model.Email;
@@ -53,6 +54,10 @@ namespace LibShare.Client.Pages
                 LoadSpinner.Hide();
                 StateHasChanged();
                 Toast.ShowError(ex.Message);
+            }
+            finally
+            {
+                LoadSpinner.Hide();
             }
         }
 

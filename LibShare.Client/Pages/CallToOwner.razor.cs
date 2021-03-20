@@ -65,6 +65,7 @@ namespace LibShare.Client.Pages
 
         async void OnSubmitHandle()
         {
+            LoadSpinner.Show();
             try
             {
                 var message = new CallOwnerApiModel();
@@ -81,6 +82,10 @@ namespace LibShare.Client.Pages
                 ErrorMessage = ex.Message;
                 Toast.ShowError("Помилка. Повідомлення не відправлено!");
                 Console.WriteLine("Error Message: " + ErrorMessage);
+            }
+            finally
+            {
+                LoadSpinner.Hide();
             }
         }
 
