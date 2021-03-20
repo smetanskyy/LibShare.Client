@@ -10,12 +10,13 @@ namespace LibShare.Client.Pages
 {
     public partial class ProfileShow
     {
-        [Inject]
-        IHttpService HttpService { get; set; }
+        [Inject] IHttpService HttpService { get; set; }
+        [Inject] IAuthService AuthService { get; set; }
+        
+        [Inject] IAccountService AccountService { get; set; }
         [CascadingParameter] public Toast Toast { get; set; }
 
-        [Inject]
-        NavigationManager NavigationManager { get; set; }
+        [Inject] NavigationManager NavigationManager { get; set; }
 
         [Parameter]
         public UserApiModel Model { get; set; } = new UserApiModel();
@@ -50,6 +51,21 @@ namespace LibShare.Client.Pages
         void GoToChangePassword()
         {
             NavigationManager.NavigateTo("/change-password");
+        }
+
+        async void DeleteAccount()
+        {
+            try
+            {
+                await AccountService.DeleteMe(Model);
+                await AuthService.Logout();
+                Toast.ShowSuccess("Обліковий запис успішно видалено!");
+            }
+            catch (Exception ex)
+            {
+                Toast.ShowError(ex.Message);
+                ErrorMessage = ex.Message;
+            }
         }
     }
 }

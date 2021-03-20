@@ -48,8 +48,22 @@ namespace LibShare.Client.Data.Providers
                 return Anonymous;
             }
 
-            var decodeToken = ReadJwtToken(token);
-            if(decodeToken.ValidTo.ToLocalTime() < DateTime.Now)
+            JwtSecurityToken decodeToken;
+
+            try
+            {
+                decodeToken = ReadJwtToken(token);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error from server: " + ex.Message);
+                await _jSRuntime.RemoveFromLocalStorage(jwtKey);
+                await _jSRuntime.RemoveFromLocalStorage(tokenRefreshKey);
+                return Anonymous;
+            }
+
+            if (decodeToken.ValidTo.ToLocalTime() < DateTime.Now)
             {
                 try
                 {
@@ -57,7 +71,7 @@ namespace LibShare.Client.Data.Providers
                     {
                         Token = token,
                         RefreshToken = tokenRefresh
-                    });   
+                    });
 
                     await _jSRuntime.SetInLocalStorage(jwtKey, tokens.Token);
                     await _jSRuntime.SetInLocalStorage(tokenRefreshKey, tokens.RefreshToken);
@@ -70,6 +84,8 @@ namespace LibShare.Client.Data.Providers
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error from server: " + ex.Message);
+                    await _jSRuntime.RemoveFromLocalStorage(jwtKey);
+                    await _jSRuntime.RemoveFromLocalStorage(tokenRefreshKey);
                     return Anonymous;
                 }
             }

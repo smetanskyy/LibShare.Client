@@ -61,21 +61,47 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-3 mt-3">
                                 <div class="form-group text-center">
                                     <button type="button" @onclick="GoToChangeProfile" class="btn btn-primary"> Оновити профіль </button>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-3 mt-3">
                                 <div class="form-group text-center">
                                     <button type="button" @onclick="GoToChangePhoto" class="btn btn-success"> Поміняти фото </button>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-3 mt-3">
                                 <div class="form-group text-center">
-                                    <button type="button" @onclick="GoToChangePassword" class="btn btn-secondary"> Змінити пароль </button>
+                                    <button type="button" @onclick="GoToChangePassword" class="btn btn-info"> Змінити пароль </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 mt-3">
+                                <div class="form-group text-center">
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"> Видалити акаунт </button>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Видалення акаунта</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Ви дійсно бажаєте видалити обліковий запис?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Ні</button>
+                                            <button type="button" @onactivate="DeleteAccount" class="btn btn-primary">Так! Моє рішення остаточне!</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
