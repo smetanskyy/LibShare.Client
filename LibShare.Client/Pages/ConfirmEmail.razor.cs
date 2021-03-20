@@ -64,9 +64,7 @@ namespace LibShare.Client.Pages
                 }
 
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
-                Console.WriteLine(Model.RecaptchaToken);
-                var response = await _httpService.Post<ConfirmApiModel, TokenApiModel>(ApiUrls.ConfirmEmailPartTwoUrl, Model);
-                await authService.UpdateToken(response);
+                await _httpService.Post<ConfirmApiModel, MessageApiModel>(ApiUrls.ConfirmEmailPartTwoUrl, Model);
                 Toast.ShowSuccess("Електронна пошта успішно підтверджена!");
                 NavigationManager.NavigateTo("/index");
             }
