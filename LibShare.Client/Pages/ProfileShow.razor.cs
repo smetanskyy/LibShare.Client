@@ -30,7 +30,7 @@ namespace LibShare.Client.Pages
             }
             catch (Exception ex)
             {
-                Toast.ShowError(ex.Message); l
+                Toast.ShowError(ex.Message);
                 ErrorMessage = ex.Message;
             }
         }

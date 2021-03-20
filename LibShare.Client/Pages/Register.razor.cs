@@ -46,7 +46,7 @@ namespace LibShare.Client.Pages
                 await authService.Register(Model);
                 LoadSpinner.Hide();
                 Toast.ShowSuccess("Ви успішно зареєструвалися!");
-                NavigationManager.NavigateTo("/index");
+                NavigationManager.NavigateTo("/message");
             }
             catch (Exception ex)
             {

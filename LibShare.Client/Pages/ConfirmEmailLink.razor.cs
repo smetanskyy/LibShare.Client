@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class RestorePassword
+    public partial class ConfirmEmailLink
     {
         [Inject]
         IJSRuntime JSRuntime { get; set; }
@@ -45,7 +45,7 @@ namespace LibShare.Client.Pages
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
                 var response = await _httpService.Post<EmailApiModel, MessageApiModel>(ApiUrls.RestorePassworPartOneUrl, Model);
                 LoadSpinner.Hide();
-                Toast.ShowSuccess("На пошту відправлено посилання для відновлення паролю!");
+                Toast.ShowSuccess("На пошту відправлено посилання!");
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)

@@ -4,16 +4,18 @@ using LibShare.Client.Data.Constants;
 using LibShare.Client.Data.Interfaces;
 using LibShare.Client.Helpers;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
 namespace LibShare.Client.Pages
 {
-    public partial class RestorePassword
+    public partial class RestorePasswordChangePasswor
     {
         [Inject]
         IJSRuntime JSRuntime { get; set; }
+        [CascadingParameter] public Toast Toast { get; set; }
 
         [Inject]
         IHttpService _httpService { get; set; }
@@ -22,10 +24,12 @@ namespace LibShare.Client.Pages
         NavigationManager NavigationManager { get; set; }
 
         [Parameter]
-        public EmailApiModel Model { get; set; } = new EmailApiModel();
+        public RestoreApiModel Model { get; set; } = new RestoreApiModel();
 
         public string ErrorMessage { get; set; }
-        [CascadingParameter] public Toast Toast { get; set; }
+
+        [Inject]
+        IAuthService authService { get; set; }
 
         private Spinner LoadSpinner { get; set; }
 
@@ -42,18 +46,39 @@ namespace LibShare.Client.Pages
             LoadSpinner.Show();
             try
             {
+                var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+
+                if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("email", out var email))
+                {
+                    Model.Email = email;
+                }
+                else
+                {
+                    throw new Exception("Посилання недійсне!");
+                }
+                if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("token", out var token))
+                {
+                    Model.Token = token;
+                }
+                else
+                {
+                    throw new Exception("Посилання недійсне!");
+                }
+
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
-                var response = await _httpService.Post<EmailApiModel, MessageApiModel>(ApiUrls.RestorePassworPartOneUrl, Model);
+                Console.WriteLine(Model.RecaptchaToken);
+                var response = await _httpService.Post<RestoreApiModel, TokenApiModel>(ApiUrls.RestorePassworPartTwoUrl, Model);
+                await authService.UpdateToken(response);
                 LoadSpinner.Hide();
-                Toast.ShowSuccess("На пошту відправлено посилання для відновлення паролю!");
+                Toast.ShowSuccess("Пароль успішно змінено!");
                 NavigationManager.NavigateTo("/index");
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
                 LoadSpinner.Hide();
-                StateHasChanged();
                 Toast.ShowError(ex.Message);
+                StateHasChanged();
             }
         }
 
