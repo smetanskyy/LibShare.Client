@@ -53,18 +53,20 @@ namespace LibShare.Client.Pages
             NavigationManager.NavigateTo("/change-password");
         }
 
+        DialogModalDeleteUser modal { get; set; }
+
         async void DeleteAccount()
         {
             try
             {
-                await AccountService.DeleteMe(Model);
-                await AuthService.Logout();
+                await AccountService.DeleteMe();
                 Toast.ShowSuccess("Обліковий запис успішно видалено!");
+                await AuthService.Logout();
             }
             catch (Exception ex)
             {
-                Toast.ShowError(ex.Message);
                 ErrorMessage = ex.Message;
+                Toast.ShowError(ex.Message);
             }
         }
     }

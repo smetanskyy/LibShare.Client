@@ -54,9 +54,9 @@ namespace LibShare.Client.Data.Services
             return await _httpService.Post<UserApiModel, UserApiModel>(ApiUrls.ClientEditProfile, model);
         }
 
-        public async Task<MessageApiModel> DeleteMe(UserApiModel model)
+        public async Task<MessageApiModel> DeleteMe()
         {
-            return await _httpService.Put<UserApiModel, MessageApiModel>(ApiUrls.DeleteMeUrl, model);
+            return await _httpService.Put<object, MessageApiModel>(ApiUrls.DeleteMeUrl, default);
         }
     }
 }

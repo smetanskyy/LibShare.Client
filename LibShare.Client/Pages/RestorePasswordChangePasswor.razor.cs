@@ -41,9 +41,8 @@ namespace LibShare.Client.Pages
             }
         }
 
-        private async void OnSubmitHandle()
+        protected override void OnInitialized()
         {
-            LoadSpinner.Show();
             try
             {
                 var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
@@ -64,7 +63,19 @@ namespace LibShare.Client.Pages
                 {
                     throw new Exception("Посилання недійсне!");
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                Toast.ShowError(ex.Message);
+            }
+        }
 
+        private async void OnSubmitHandle()
+        {
+            LoadSpinner.Show();
+            try
+            {
                 Model.RecaptchaToken = await JSRuntime.GetRecaptcha("OnSubmit");
                 Console.WriteLine(Model.RecaptchaToken);
                 var response = await _httpService.Post<RestoreApiModel, TokenApiModel>(ApiUrls.RestorePassworPartTwoUrl, Model);

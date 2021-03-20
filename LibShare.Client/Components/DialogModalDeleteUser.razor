@@ -1,0 +1,55 @@
+﻿@inject NavigationManager NavigationManager
+@inject IAccountService AccountService
+@inject IAuthService AuthService
+
+@if (DisplayModalToggle)
+{
+    <!-- Modal -->
+    <div class="modal-backdrop show"></div>
+    <div class="modal fade show" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true" style="display: block">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Видалення акаунта</h5>
+                    <button type="button" @onclick="Hide" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Ви дійсно бажаєте видалити обліковий запис?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" @onclick="Hide" class="btn btn-secondary" data-dismiss="modal">  Ні  </button>
+                    <button type="button" @onclick="DeleteAccount" class="btn btn-primary">Так! Моє рішення остаточне!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public bool DisplayModalToggle { get; set; } = false;
+
+    [Parameter]
+    public EventCallback DeleteAccountEvent { get; set; }
+
+    public void Show()
+    {
+        DisplayModalToggle = true;
+        StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        DisplayModalToggle = false;
+        StateHasChanged();
+    }
+
+    async void DeleteAccount()
+    {
+        Hide();
+        await DeleteAccountEvent.InvokeAsync();
+    }
+
+}

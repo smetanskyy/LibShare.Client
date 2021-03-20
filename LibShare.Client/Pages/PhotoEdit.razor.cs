@@ -15,6 +15,8 @@ namespace LibShare.Client.Pages
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
+        Spinner SpinnerLoad { get; set; }
+
         [JSInvokable]
         public void InvokeMethod(string data)
         {
@@ -38,7 +40,7 @@ namespace LibShare.Client.Pages
             try
             {
                 var response = await HttpService.Get<ImageApiModel>(ApiUrls.ClientPhoto);
-                if(response != null)
+                if (response != null)
                 {
                     Photo = response.Photo;
                 }
@@ -54,8 +56,10 @@ namespace LibShare.Client.Pages
 
         private async Task UpdatePhoto()
         {
+            SpinnerLoad.Show();
             await HttpService.Post<ImageApiModel, ImageApiModel>(ApiUrls.ChangePhoto, new ImageApiModel() { Photo = Photo });
             Toast.ShowSuccess("Фото успішно змінено!");
+            SpinnerLoad.Hide();
             NavigationManager.NavigateTo("/profile");
         }
 

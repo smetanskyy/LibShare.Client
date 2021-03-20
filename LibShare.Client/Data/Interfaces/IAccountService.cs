@@ -9,6 +9,6 @@ namespace LibShare.Client.Data.Interfaces
         Task<TokenApiModel> RegisterUserAsync(RegisterApiModel model);
         Task<TokenApiModel> RefreshTokenAsync(TokenApiModel model);
         Task LogoutAsync();
-        Task<MessageApiModel> DeleteMe(UserApiModel model);
+        Task<MessageApiModel> DeleteMe();
     }
 }
