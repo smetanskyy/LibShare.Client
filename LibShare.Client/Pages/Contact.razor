@@ -62,30 +62,33 @@
                         <div class="col-md-12">
                             <div class="contact-wrap bg-light w-100 p-md-5 p-4">
                                 <h3 class="mb-4">Зв'яжіться з нами</h3>
-                                <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+
+                                <EditForm Model="Model" method="POST" class="contactForm" OnValidSubmit="OnSubmitHandle">
+                                    <text class="text-danger">@ErrorMessage</text>
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="label" for="name">Ім'я</label>
-                                                <input type="text" class="form-control px-2" name="name" id="name" placeholder="Ім'я">
+                                                <InputText @bind-Value="Model.Name" class="form-control px-2" placeholder="Ім'я" required/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="label" for="email">Email</label>
-                                                <input type="email" class="form-control px-2" name="email" id="email" placeholder="Email">
+                                                <InputText type="email" @bind-Value="Model.Email" class="form-control px-2" placeholder="Email" required/>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="label" for="subject">Тема</label>
-                                                <input type="text" class="form-control px-2" name="subject" id="subject" placeholder="Тема">
+                                                <InputText @bind-Value="Subject" class="form-control px-2" placeholder="Тема" required/>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="label" for="#">Текст повідомлення</label>
-                                                <textarea name="message" class="form-control px-2" id="message" cols="30" rows="4" placeholder="Текст повідомлення"></textarea>
+                                                <textarea @bind="Text" name="message" class="form-control px-2" id="message" cols="30" rows="4" placeholder="Текст повідомлення" required></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -95,7 +98,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </EditForm>
+
                             </div>
                         </div>
                         @*<div class="col-md-5 order-md-first d-flex align-items-stretch">
