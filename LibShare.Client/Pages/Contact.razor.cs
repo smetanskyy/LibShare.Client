@@ -35,10 +35,9 @@ namespace LibShare.Client.Pages
         {
             try
             {
-                var message = new CallAdminApiModel();
-                message.Subject = Subject;
-                message.Text = Text;
-                await HttpService.Post<CallAdminApiModel, MessageApiModel>(ApiUrls.CallToAdmin, message);
+                Model.Email = Subject;
+                Model.Text = Text;
+                await HttpService.Post<CallAdminApiModel, MessageApiModel>(ApiUrls.CallToAdmin, Model);
                 Toast.ShowSuccess("Повідомлення успішно відправлено!");
                 NavigationManager.NavigateTo("/index");
             }
