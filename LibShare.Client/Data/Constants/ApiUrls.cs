@@ -7,8 +7,8 @@ namespace LibShare.Client.Data.Constants
 {
     public static class ApiUrls
     {
-        public static string ApiBaseUrl { get; set; } = "http://localhost:5000";
-        //public static string ApiBaseUrl { get; set; } = "http://20.67.117.174:5000";
+        //public static string ApiBaseUrl { get; set; } = "http://localhost:5000";
+        public static string ApiBaseUrl { get; set; } = "http://20.67.117.174:5000";
         public static string LoginUrl { get; set; } = ApiBaseUrl + "/api/account/login";
         public static string RegisterUrl { get; set; } = ApiBaseUrl + "/api/account/register";
         public static string RefreshTokenUrl { get; set; } = ApiBaseUrl + "/api/account/refreshtoken";
